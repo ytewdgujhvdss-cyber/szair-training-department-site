@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>深圳航空培训部 · 飞行准备网</title>
+<style>
+/*
+Design system
+Colors: Shenzhen Airlines red #c92b2b, directory blue #1577ff, text #161a22, muted #8d949e.
+Surface rhythm: login uses real aircraft sky asset; app uses restrained white/blue-gray bands.
+Radii: 8px cards for work surfaces, 14px avatars, pill status badges only for labels.
+Typography: system CJK stack, dense operational sizing, larger mobile contact names from reference images.
+*/
+:root {
+  --sz-red: #c92b2b;
+  --sz-red-dark: #a61f24;
+  --blue: #1577ff;
+  --blue-soft: #e8f2ff;
+  --sky: #f5f8fc;
+  --surface: #ffffff;
+  --line: #e8ebf0;
+  --line-soft: #f2f4f7;
+  --text: #161a22;
+  --muted: #8d949e;
+  --subtle: #6b7280;
+  --warning: #ff8a00;
+  --green: #18a36a;
+  --shadow: 0 14px 40px rgba(22, 30, 46, .08);
+  --sidebar: 252px;
+  --radius: 8px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  color: var(--text);
+  background: var(--sky);
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+.hidden { display: none !important; }
+
+.login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: url("assets/login-scene-bg.png") center / cover no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+.login::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(9, 21, 38, .14);
+  pointer-events: none;
+}
+.login-shell {
+  width: min(1440px, 100%);
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-composite {
+  position: relative;
+  width: min(1360px, 100%);
+  min-height: 100vh;
+}
+.login-shot-left {
+  position: absolute;
+  display: block;
+  max-width: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.login-shot-left {
+  left: 5.5%;
+  top: 16.5%;
+  width: min(43vw, 700px);
+}
+.login-card {
+  position: absolute;
+  right: 7.8%;
+  top: 14.5%;
+  z-index: 2;
+  width: min(31vw, 520px);
+  min-width: 420px;
+  padding: 40px 30px 28px;
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,.72);
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 28px 56px rgba(15, 28, 46, .18);
+  backdrop-filter: blur(16px);
+}
+.login-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.phoenix {
+  width: 30px;
+  height: 30px;
+  display: inline-grid;
+  place-items: center;
+  color: var(--sz-red);
+  transform: rotate(-18deg);
+}
+.phoenix::before {
+  content: "";
+  width: 26px;
+  height: 18px;
+  background: currentColor;
+  clip-path: polygon(0 64%, 44% 0, 100% 18%, 56% 42%, 82% 100%, 38% 62%, 10% 100%);
+}
+.login-title {
+  font-size: clamp(22px, 1.9vw, 28px);
+  font-weight: 780;
+  letter-spacing: .02em;
+}
+.login-subtitle {
+  margin: 10px 0 28px;
+  text-align: center;
+  color: #7d8697;
+  font-size: 12px;
+  letter-spacing: .12em;
+}
+.field {
+  height: 64px;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: center;
+  padding: 0 18px;
+  margin-bottom: 18px;
+  border-radius: 18px;
+  border: 1px solid #d9e2f0;
+  background: #edf3ff;
+}
+.field input,
+.field select {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: clamp(16px, 1.2vw, 18px);
+}
+.field-icon {
+  color: #b2bac8;
+  font-size: 22px;
+  line-height: 1;
+}
+.login-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0 24px;
+}
+.login-links a {
+  color: #57a1ff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+}
+.login-submit {
+  width: 100%;
+  height: 56px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #d43d37, #f06e68);
+  color: white;
+  font-size: 16px;
+  font-weight: 780;
+  box-shadow: 0 12px 24px rgba(221, 82, 78, .28);
+}
+.portal-note {
+  margin-top: 24px;
+  text-align: center;
+  color: #667081;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.app { min-height: 100vh; display: grid; grid-template-columns: var(--sidebar) 1fr; }
+.sidebar {
+  background: #101722;
+  color: white;
+  padding: 24px 16px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.side-head { display: flex; align-items: center; gap: 10px; padding: 0 8px 22px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.side-head .phoenix { color: #ef4747; }
+.side-title { font-weight: 760; line-height: 1.2; }
+.side-title small { display: block; color: rgba(255,255,255,.45); font-size: 11px; letter-spacing: .1em; margin-top: 4px; }
+.nav { padding: 18px 0; flex: 1; }
+.nav button {
+  width: 100%;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: rgba(255,255,255,.64);
+  text-align: left;
+  padding: 0 12px;
+  margin-bottom: 4px;
+}
+.nav button.active, .nav button:hover { background: rgba(255,255,255,.08); color: white; }
+.nav button.active { box-shadow: inset 3px 0 0 var(--sz-red); }
+.nav small { margin-left: auto; background: var(--sz-red); color: white; border-radius: 99px; padding: 1px 7px; font-size: 11px; }
+.side-user { border-top: 1px solid rgba(255,255,255,.08); padding-top: 16px; }
+.side-user-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.mini-avatar, .avatar {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  background: var(--blue-soft);
+  color: var(--blue);
+  font-weight: 760;
+  overflow: hidden;
+}
+.mini-avatar { width: 36px; height: 36px; border-radius: 10px; }
+.avatar { width: 52px; height: 52px; border-radius: 14px; font-size: 20px; }
+.logout {
+  width: 100%;
+  height: 38px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  color: rgba(255,255,255,.7);
+  border-radius: var(--radius);
+}
+
+.main { min-width: 0; }
+.topbar {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  background: rgba(255,255,255,.86);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+.topbar h1 { margin: 0; font-size: 18px; }
+.topbar time { color: var(--subtle); font-size: 13px; }
+.content { padding: 26px 30px 36px; }
+.page { display: none; }
+.page.active { display: block; animation: fade .18s ease-out; }
+@keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+.hero-strip {
+  display: grid;
+  grid-template-columns: 1.35fr .65fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.hero-carousel {
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 14px;
+  background: #0f223c;
+  box-shadow: 0 22px 48px rgba(16, 24, 40, .12);
+}
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity .45s ease, transform .8s ease;
+  pointer-events: none;
+}
+.hero-slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+.hero-slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(10, 27, 46, .34) 0%, rgba(12, 29, 49, .16) 38%, rgba(8, 21, 36, .08) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, .06) 0%, rgba(255, 255, 255, 0) 32%, rgba(7, 18, 31, .08) 100%);
+}
+.hero-slide.is-dark::before {
+  background:
+    linear-gradient(90deg, rgba(8, 20, 36, .48) 0%, rgba(10, 24, 42, .3) 40%, rgba(8, 18, 32, .16) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, .12) 0%, rgba(0, 0, 0, .06) 42%, rgba(0, 0, 0, .14) 100%);
+}
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(.96) contrast(1.08) saturate(1.04);
+}
+.hero-slide.is-dark img {
+  filter: brightness(.82) contrast(1.1) saturate(1.02);
+}
+.hero-minimal-copy {
+  position: absolute;
+  left: 34px;
+  bottom: 30px;
+  z-index: 2;
+  color: white;
+}
+.hero-minimal-copy h2 {
+  margin: 0;
+  font-size: clamp(30px, 3.3vw, 48px);
+  line-height: 1.06;
+  letter-spacing: 0;
+  text-shadow: 0 6px 20px rgba(5, 14, 26, .28);
+}
+.hero-dots {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+}
+.hero-dots button {
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255,255,255,.36);
+  padding: 0;
+}
+.hero-dots button.active {
+  width: 34px;
+  background: white;
+}
+.work-panel, .card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 0 rgba(16, 24, 40, .02);
+}
+.work-panel {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  min-height: 170px;
+}
+.eyebrow { color: var(--sz-red); font-size: 13px; font-weight: 760; letter-spacing: .08em; }
+.work-panel h2 { margin: 8px 0 10px; font-size: clamp(25px, 3vw, 38px); line-height: 1.12; letter-spacing: 0; }
+.work-panel p { margin: 0; color: var(--subtle); max-width: 620px; }
+.quick-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.stat { padding: 18px; background: white; border: 1px solid var(--line); border-radius: var(--radius); }
+.stat b { font-size: 28px; display: block; line-height: 1; }
+.stat span { color: var(--subtle); font-size: 13px; }
+.card-head { min-height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; border-bottom: 1px solid var(--line-soft); }
+.card-head h3 { margin: 0; font-size: 16px; }
+.card-body { padding: 18px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.todo { display: grid; grid-template-columns: 10px 1fr auto; gap: 12px; align-items: start; padding: 14px 0; border-bottom: 1px solid var(--line-soft); }
+.todo:last-child { border-bottom: 0; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); margin-top: 8px; }
+.dot.red { background: var(--sz-red); }
+.dot.green { background: var(--green); }
+.todo strong { display: block; }
+.todo span, .todo time { color: var(--muted); font-size: 13px; }
+
+.directory-layout {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 18px;
+}
+.phone {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 680px;
+}
+.phone-toolbar {
+  height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.search { flex: 1; height: 36px; border: 0; border-radius: 7px; background: #f3f6fa; padding: 0 12px; outline: 0; }
+.tabbar { display: grid; grid-template-columns: repeat(2, 1fr); border-bottom: 1px solid var(--line-soft); }
+.tabbar button { height: 44px; border: 0; background: white; color: var(--subtle); font-weight: 700; }
+.tabbar button.active { color: var(--blue); box-shadow: inset 0 -2px 0 var(--blue); }
+.list { padding: 10px 0; }
+.dept-row, .person-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 94px;
+  padding: 12px 20px;
+  border: 0;
+  background: white;
+  width: 100%;
+  text-align: left;
+}
+.dept-row:hover, .person-row:hover, .person-row.selected { background: #f4f4f5; }
+.folder {
+  width: 64px; height: 64px; border-radius: 14px; background: #eef9ff; display: grid; place-items: center; color: #66c7ef; font-size: 34px;
+}
+.dept-title, .person-name { font-size: 21px; font-weight: 780; letter-spacing: 0; }
+.dept-count, .person-role { color: var(--muted); font-size: 17px; margin-left: 6px; font-weight: 500; }
+.person-role { display: block; margin: 2px 0 0; }
+.name-line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 650;
+  border: 1px solid currentColor;
+}
+.badge.manager { color: var(--warning); background: #fffaf3; }
+.status { color: var(--muted); font-size: 17px; }
+.detail {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  min-width: 0;
+}
+.detail-hero {
+  padding: 26px;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  border-bottom: 1px solid var(--line-soft);
+}
+.detail-hero h2 { margin: 0; font-size: 30px; line-height: 1.15; }
+.detail-hero p { margin: 6px 0 0; color: var(--subtle); }
+.detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding: 18px; }
+.info-box { background: #f8fafc; border: 1px solid var(--line-soft); border-radius: var(--radius); padding: 16px; }
+.info-box span { display: block; color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+.info-box b { font-size: 18px; }
+.table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.table th { text-align: left; color: var(--subtle); background: #f8fafc; padding: 13px 16px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.table td { padding: 14px 16px; border-bottom: 1px solid var(--line-soft); }
+.table a { color: var(--blue); text-decoration: none; font-weight: 700; }
+.pill { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 9px; font-size: 12px; font-weight: 700; background: var(--blue-soft); color: #1265ce; }
+.pill.red { background: #fff0f0; color: var(--sz-red); }
+.pill.green { background: #eaf8f1; color: var(--green); }
+.btn {
+  min-height: 36px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: white;
+  color: var(--text);
+  padding: 0 14px;
+  font-weight: 700;
+}
+.btn.primary { background: var(--sz-red); border-color: var(--sz-red); color: white; }
+.filter { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.filter input, .filter select { height: 38px; border: 1px solid var(--line); border-radius: 7px; padding: 0 12px; background: white; outline: 0; }
+.course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.course { background: white; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.course-top { height: 92px; display: flex; align-items: center; justify-content: space-between; padding: 18px; color: white; background: linear-gradient(135deg, var(--sz-red), #df6861); }
+.course-top.blue { background: linear-gradient(135deg, #176fe5, #67a9ff); }
+.course-top.gold { background: linear-gradient(135deg, #bd8427, #e5bd63); }
+.course-top.green { background: linear-gradient(135deg, #16875a, #5cc291); }
+.course-body { padding: 16px; }
+.course h3 { margin: 0 0 10px; font-size: 17px; }
+.course p { margin: 0; color: var(--subtle); font-size: 13px; }
+.progress { height: 7px; background: #eef1f5; border-radius: 99px; overflow: hidden; margin-top: 14px; }
+.progress i { display: block; height: 100%; background: var(--blue); border-radius: inherit; }
+.stage-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.stage-card { padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: white; }
+.stage-no { display: inline-flex; min-width: 28px; height: 28px; padding: 0 8px; align-items: center; justify-content: center; border-radius: 99px; background: #fff3f2; color: var(--sz-red); font-weight: 800; margin-bottom: 10px; }
+.stage-card h4, .lane h4, .scenario-card h4 { margin: 0 0 8px; font-size: 16px; }
+.stage-card p, .scenario-card p { margin: 0; color: var(--subtle); font-size: 13px; line-height: 1.6; }
+.section-stack { display: grid; gap: 18px; }
+.lane-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.lane { padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: white; }
+.lane ul { margin: 0; padding-left: 18px; color: var(--subtle); }
+.lane li { margin: 6px 0; }
+.scenario-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.scenario-card { padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(180deg, #fff 0%, #fafcff 100%); }
+.scenario-card strong { display: block; margin-bottom: 10px; font-size: 14px; }
+.target-band { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.target-card { padding: 20px; border-radius: var(--radius); border: 1px solid var(--line); background: white; }
+.target-card b { display: block; margin-bottom: 8px; font-size: 20px; }
+.muted-list { margin: 0; padding-left: 18px; color: var(--subtle); }
+.portal-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.portal-tile {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, #fff 0%, #f9fbff 100%);
+}
+.portal-tile h4 { margin: 0 0 8px; font-size: 17px; }
+.portal-tile p { margin: 0; color: var(--subtle); font-size: 13px; line-height: 1.6; }
+
+@media (max-width: 980px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { position: relative; height: auto; }
+  .nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+  .hero-strip, .grid-2, .directory-layout { grid-template-columns: 1fr; }
+  .quick-stats, .course-grid, .detail-grid, .stage-grid, .target-band, .portal-tiles { grid-template-columns: repeat(2, 1fr); }
+  .lane-grid, .scenario-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .login-composite { width: 100%; min-height: 100vh; }
+  .login-shot-left { left: 3%; top: 14%; width: 66vw; }
+  .login-card { right: 4%; top: 16%; width: 52vw; min-width: 0; padding: 26px 18px 22px; border-radius: 18px; }
+  .content { padding: 16px; }
+  .topbar { padding: 0 16px; }
+  .work-panel { grid-template-columns: 1fr; }
+  .quick-stats, .course-grid, .detail-grid, .stage-grid, .target-band, .portal-tiles { grid-template-columns: 1fr; }
+  .hero-carousel { min-height: 360px; }
+  .hero-minimal-copy { left: 20px; bottom: 20px; }
+  .phone { min-height: auto; }
+  .dept-row, .person-row { min-height: 82px; padding: 10px 14px; gap: 14px; }
+  .folder, .avatar { width: 54px; height: 54px; }
+  .person-name, .dept-title { font-size: 19px; }
+}
+</style>
+</head>
+<body>
+<section class="login" id="loginPage">
+  <div class="login-shell">
+    <div class="login-composite" aria-hidden="true">
+      <img class="login-shot-left" src="assets/login-copy-shot.png" alt="">
+    </div>
+    <form class="login-card" id="loginForm">
+      <div class="login-mark">
+        <span class="phoenix" aria-hidden="true"></span>
+        <span class="login-title">深圳航空培训部</span>
+      </div>
+      <div class="login-subtitle">TRAINING MANAGEMENT PORTAL</div>
+      <label class="field"><span class="field-icon">●</span><input id="username" value="a04937" aria-label="账号"></label>
+      <label class="field"><span class="field-icon">□</span><input id="password" type="password" value="password" aria-label="密码"></label>
+      <label class="field"><span class="field-icon">◇</span><select id="role" aria-label="身份"></select></label>
+      <div class="login-links"><a href="#">重置密码</a><a href="#">问题反馈</a></div>
+      <button class="login-submit" type="submit">登录</button>
+      <div class="portal-note">飞训中心智慧培训入口</div>
+    </form>
+  </div>
+</section>
+
+<section class="app hidden" id="app">
+  <aside class="sidebar">
+    <div class="side-head"><span class="phoenix"></span><div class="side-title">深航培训部<small>TRAINING PORTAL</small></div></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="side-user">
+      <div class="side-user-row"><div class="mini-avatar" id="sideAvatar">段</div><div><strong id="sideName">段超</strong><br><small id="sideRole">飞训中心主任</small></div></div>
+      <button class="logout" id="logout">退出登录</button>
+    </div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><h1 id="pageTitle">工作台</h1><time id="clock"></time></header>
+    <div class="content">
+      <section class="page active" id="dashboard">
+        <div class="hero-strip">
+          <div class="hero-carousel" id="heroCarousel">
+            <div id="heroSlides"></div>
+            <div class="hero-dots" id="heroDots"></div>
+          </div>
+          <div class="quick-stats">
+            <div class="stat"><b>48</b><span>在授课程</span></div>
+            <div class="stat"><b>390</b><span>组织成员</span></div>
+            <div class="stat"><b>12</b><span>待审批事项</span></div>
+            <div class="stat"><b>87%</b><span>培训完成率</span></div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head"><h3>近期待办</h3><span class="pill red">今日重点</span></div>
+            <div class="card-body" id="todoList"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>业务域概览</h3><button class="btn" data-go="directory">全部</button></div>
+            <div class="card-body">
+              <table class="table"><tbody id="deptSummary"></tbody></table>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:18px">
+          <div class="card-head"><h3>常用入口</h3><button class="btn" data-go="courses">课程中心</button></div>
+          <div class="card-body">
+            <div class="portal-tiles" id="targetBand"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="plan">
+        <div class="section-stack">
+          <div class="card">
+            <div class="card-head"><h3>四阶段推进图</h3><span class="pill">AI 赋能计划</span></div>
+            <div class="card-body"><div class="stage-grid" id="stageGrid"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>中心业务梳理</h3><button class="btn" data-go="directory">关联人员</button></div>
+            <div class="card-body"><div class="lane-grid" id="laneGrid"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="directory">
+        <div class="directory-layout">
+          <div class="phone">
+            <div class="phone-toolbar"><input class="search" id="peopleSearch" placeholder="搜索姓名、岗位或状态"><button class="btn" id="clearSearch">清空</button></div>
+            <div class="tabbar"><button class="active" data-dir-tab="dept">组织</button><button data-dir-tab="people">人员</button></div>
+            <div class="list" id="directoryList"></div>
+          </div>
+          <div class="detail" id="personDetail"></div>
+        </div>
+      </section>
+
+      <section class="page" id="courses">
+        <div class="filter"><input placeholder="搜索课程名称、讲师"><select><option>全部类别</option><option>飞行培训</option><option>英语培训</option><option>理论培训</option></select><button class="btn primary">搜索</button></div>
+        <div class="course-grid" id="courseGrid"></div>
+      </section>
+
+      <section class="page" id="approvals">
+        <div class="card"><div class="card-head"><h3>待审批报名</h3><button class="btn primary">批量处理</button></div><div class="card-body" style="padding:0"><table class="table"><thead><tr><th>申请人</th><th>科室</th><th>课程</th><th>提交时间</th><th>状态</th><th>操作</th></tr></thead><tbody id="approvalRows"></tbody></table></div></div>
+      </section>
+
+      <section class="page" id="reports">
+        <div class="grid-2">
+          <div class="card"><div class="card-head"><h3>问题定位框架</h3><span class="pill green">谁 / 场景 / 困难 / 后果</span></div><div class="card-body" id="reportBars"></div></div>
+          <div class="card"><div class="card-head"><h3>AI 方案切入点</h3><button class="btn" data-go="plan">回到业务梳理</button></div><div class="card-body" id="rankingRows"></div></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</section>
+
+<script>
+const roles = [
+  { id: "duan", name: "段超", role: "飞训中心主任", dept: "飞训中心", avatar: "段" },
+  { id: "zhao", name: "赵禹诚", role: "飞行培训工程师", dept: "技术教研室", avatar: "赵" },
+  { id: "she", name: "佘积林", role: "飞行英语教研室经理", dept: "英语教研室", avatar: "积" },
+  { id: "huang", name: "黄蕾", role: "飞行培训工程师", dept: "技术教研室", avatar: "黄", manager: true },
+  { id: "wang", name: "王逢春", role: "学员管理室经理", dept: "飞行学员管理室", avatar: "王", manager: true },
+  { id: "wu", name: "吴森", role: "考务管理专员", dept: "主任室", avatar: "吴" }
+];
+
+const departments = [
+  { name: "理论教研室", count: 29 },
+  { name: "英语教研室", count: 6 },
+  { name: "技术教研室", count: 4 },
+  { name: "飞行学员管理室", count: 348 },
+  { name: "主任室", count: 3 }
+];
+
+const people = [
+  { name: "段超", role: "飞训中心主任", dept: "飞训中心", avatar: "段", lessons: 14, hours: 112, score: "4.9" },
+  { name: "赵禹诚", role: "飞行培训工程师", dept: "技术教研室", avatar: "赵", manager: true, status: "忙碌中", lessons: 8, hours: 64, score: "4.8" },
+  { name: "丁圆", role: "飞行培训工程师（飞行员）", dept: "技术教研室", avatar: "丁", status: "在家办公中", lessons: 5, hours: 42, score: "4.6" },
+  { name: "黄蕾", role: "飞行培训工程师", dept: "技术教研室", avatar: "黄", manager: true, status: "忙碌中", lessons: 11, hours: 88, score: "4.9" },
+  { name: "殷婷婷", role: "飞行培训工程师", dept: "技术教研室", avatar: "婷", manager: true, lessons: 6, hours: 38, score: "4.7" },
+  { name: "张兴君", role: "飞行培训工程师（飞行员）", dept: "理论教研室", avatar: "兴", lessons: 7, hours: 56, score: "4.5" },
+  { name: "赵坤", role: "飞行培训工程师", dept: "理论教研室", avatar: "赵", manager: true, lessons: 9, hours: 70, score: "4.8" },
+  { name: "黄晓旭", role: "综合业务专员", dept: "飞行学员管理室", avatar: "晓", status: "请假中", lessons: 3, hours: 24, score: "4.4" },
+  { name: "祝伟垚", role: "飞行培训工程师（飞行员）", dept: "理论教研室", avatar: "祝", status: "奋斗中", lessons: 10, hours: 76, score: "4.7" },
+  { name: "冷健", role: "飞行培训工程师（飞行员）", dept: "英语教研室", avatar: "冷", status: "专注一下", lessons: 4, hours: 30, score: "4.3" },
+  { name: "李龙建", role: "飞行培训工程师（飞行员）", dept: "英语教研室", avatar: "李", manager: true, status: "忙碌中", lessons: 8, hours: 61, score: "4.6" },
+  { name: "袁鸣", role: "飞行培训工程师（飞行员）", dept: "英语教研室", avatar: "袁", status: "学习中", lessons: 6, hours: 49, score: "4.5" },
+  { name: "刘思意", role: "飞行英语教员", dept: "英语教研室", avatar: "思", lessons: 7, hours: 53, score: "4.7" },
+  { name: "王佳妮", role: "飞行英语教员", dept: "英语教研室", avatar: "佳", lessons: 6, hours: 44, score: "4.6" },
+  { name: "石蕾蕾", role: "飞行英语教员", dept: "英语教研室", avatar: "蕾", lessons: 5, hours: 36, score: "4.5" },
+  { name: "吴森", role: "考务管理专员", dept: "主任室", avatar: "吴", lessons: 12, hours: 90, score: "4.9" },
+  { name: "桑艳", role: "飞行英语教员", dept: "英语教研室", avatar: "桑", manager: true, lessons: 8, hours: 66, score: "4.8" }
+];
+
+const courses = [
+  { name: "危险品运输安全培训（复训）", teacher: "段超", meta: "8学时 · 32/40人", type: "red", pct: 80 },
+  { name: "B737NG 机型差异培训", teacher: "黄蕾", meta: "24学时 · 18/30人", type: "blue", pct: 60 },
+  { name: "航空英语 ICAO Level 4", teacher: "佘积林", meta: "48学时 · 12/25人", type: "gold", pct: 48 },
+  { name: "CRM 机组资源管理", teacher: "祝伟垚", meta: "16学时 · 22/30人", type: "green", pct: 73 },
+  { name: "应急撤离程序复训", teacher: "赵坤", meta: "12学时 · 26/32人", type: "blue", pct: 81 },
+  { name: "新任班组长管理能力提升", teacher: "王逢春", meta: "16学时 · 25/30人", type: "gold", pct: 83 }
+];
+
+const heroSlides = [
+  { image: "assets/login-scene-bg.png", title: "培训部管理网站", dark: true },
+  { image: "assets/training-dept-slide.png" },
+  { image: "assets/ai-plan-slide.png" }
+];
+
+const stages = [
+  { no: "01", title: "统一思想", text: "问卷和宣讲先行，把“为什么做 AI”讲清楚，形成 all in AI 的统一共识。", status: "问卷已完成，结果分析待补齐" },
+  { no: "02", title: "梳理业务", text: "按中心、学员管理室、理论、技术、英语/运行教研室逐项拆开业务链条。", status: "围绕资质、计划、质量、报表、课程开发建模" },
+  { no: "03", title: "引入方案", text: "从问题、流程、边界、痛点四个维度判断 AI 应该落在哪个环节。", status: "优先找高门槛重复性工作" },
+  { no: "04", title: "分阶段目标", text: "当下提速，中期改革，远景规划，最终形成 AI 干活、人监督 的协作模式。", status: "从优化到重构，再到掀翻旧流程" }
+];
+
+const workstreams = [
+  { name: "中心级业务", items: ["绩效", "业务审批", "对部门汇报", "项目性汇报"] },
+  { name: "学员管理室", items: ["学员报到流程", "训练计划", "作风管理", "训练报表", "积分管理", "航校管理", "学员下飞管理"] },
+  { name: "理论教研室", items: ["教员资质管理", "大纲课课程管理", "复训课课程管理", "换季理论课程管理", "教学计划管理", "训练质量管理", "课程开发更新管理", "项目性课程管理"] },
+  { name: "技术教研室", items: ["教员资质管理", "模拟机训练课程管理", "教学计划管理", "教学质量管理", "模拟机课程开发管理"] },
+  { name: "英语/运行教研室", items: ["教员资质管理", "资质类课程管理", "复训/复考课程管理", "教学计划管理", "教学质量管理", "课程开发管理", "项目性课程管理"] }
+];
+
+const scenarios = [
+  { title: "定位问题", bullets: ["谁在用", "什么场景", "困难在哪", "后果是什么"] },
+  { title: "定位流程", bullets: ["问题卡在哪个环节", "端到端看链路", "明确前后依赖"] },
+  { title: "画出边界", bullets: ["起点是什么", "终点是什么", "哪些节点可以交给 AI"] },
+  { title: "解决痛点", bullets: ["优先切重复劳动", "保留人监督", "沉淀为标准流程"] }
+];
+
+const navItems = [
+  ["dashboard", "工作台", ""],
+  ["plan", "AI 工作计划", "4"],
+  ["directory", "组织通讯录", "390"],
+  ["courses", "课程中心", "48"],
+  ["approvals", "报名审批", "12"],
+  ["reports", "数据看板", ""]
+];
+
+let activePage = "dashboard";
+let dirTab = "dept";
+let selectedPerson = people[0];
+let activeHeroSlide = 0;
+let heroTimer = null;
+
+function iconForStatus(status) {
+  if (!status) return "";
+  if (status.includes("忙碌")) return " 🧑‍💻 ";
+  if (status.includes("请假")) return " 🕘 ";
+  if (status.includes("学习")) return " 😎 ";
+  if (status.includes("奋斗")) return " 😊 ";
+  return " 👨‍💻 ";
+}
+
+function renderRoleSelect() {
+  const select = document.getElementById("role");
+  select.innerHTML = roles.map(r => `<option value="${r.id}">${r.role} · ${r.name}</option>`).join("");
+  select.value = "duan";
+}
+
+function renderNav() {
+  document.getElementById("nav").innerHTML = navItems.map(([id, label, badge]) => (
+    `<button class="${id === activePage ? "active" : ""}" data-go="${id}"><span>${label}</span>${badge ? `<small>${badge}</small>` : ""}</button>`
+  )).join("");
+}
+
+function switchPage(id) {
+  activePage = id;
+  document.querySelectorAll(".page").forEach(p => p.classList.toggle("active", p.id === id));
+  document.getElementById("pageTitle").textContent = navItems.find(n => n[0] === id)?.[1] || "工作台";
+  renderNav();
+}
+
+function renderDashboard() {
+  const todos = [
+    ["red", "危险品运输安全培训", "今日 14:00 开课，请提前完成签到", "06-18"],
+    ["", "ICAO 英语模拟测试", "英语教研室待确认考试批次", "06-20"],
+    ["green", "应急撤离程序复训", "已完成，成绩 92 分", "06-16"],
+    ["red", "学员报到审核", "本周新学员报到材料待复核", "本周"]
+  ];
+  document.getElementById("todoList").innerHTML = todos.map(t => `<div class="todo"><i class="dot ${t[0]}"></i><div><strong>${t[1]}</strong><span>${t[2]}</span></div><time>${t[3]}</time></div>`).join("");
+  document.getElementById("deptSummary").innerHTML = workstreams.map((d, i) => `<tr><td><a href="#" data-go="directory">${d.name}</a></td><td>${d.items.length} 项</td><td><span class="pill">${["稳定运行","高频使用","持续排班","重点保障","日常协同"][i]}</span></td></tr>`).join("");
+  document.getElementById("targetBand").innerHTML = [
+    ["组织通讯录", "快速查看教研室架构、人员状态和岗位信息。"],
+    ["课程中心", "统一管理报名中、即将开课和重点复训课程。"],
+    ["审批与看板", "集中处理审批事项并查看培训运行数据。"]
+  ].map(t => `<div class="portal-tile"><h4>${t[0]}</h4><p>${t[1]}</p></div>`).join("");
+}
+
+function renderHeroCarousel() {
+  const slides = document.getElementById("heroSlides");
+  const dots = document.getElementById("heroDots");
+  slides.innerHTML = heroSlides.map((slide, index) => `
+    <article class="hero-slide ${index === activeHeroSlide ? "active" : ""} ${slide.dark ? "is-dark" : ""}">
+      <img src="${slide.image}" alt="">
+      ${slide.title ? `<div class="hero-minimal-copy"><h2>${slide.title}</h2></div>` : ""}
+    </article>
+  `).join("");
+  dots.innerHTML = heroSlides.map((_, index) => `<button class="${index === activeHeroSlide ? "active" : ""}" data-slide="${index}" aria-label="slide ${index + 1}"></button>`).join("");
+}
+
+function startHeroCarousel() {
+  if (heroTimer) clearInterval(heroTimer);
+  heroTimer = setInterval(() => {
+    activeHeroSlide = (activeHeroSlide + 1) % heroSlides.length;
+    renderHeroCarousel();
+  }, 4200);
+}
+
+function renderPlan() {
+  document.getElementById("stageGrid").innerHTML = stages.map(s => `
+    <article class="stage-card">
+      <span class="stage-no">${s.no}</span>
+      <h4>${s.title}</h4>
+      <p>${s.text}</p>
+      <div class="progress"><i style="width:${s.no === "01" ? 100 : s.no === "02" ? 72 : s.no === "03" ? 48 : 35}%;background:${s.no === "01" ? "var(--green)" : s.no === "02" ? "var(--blue)" : "var(--sz-red)"}"></i></div>
+      <p style="margin-top:10px"><strong>${s.status}</strong></p>
+    </article>
+  `).join("");
+  document.getElementById("laneGrid").innerHTML = workstreams.map(w => `
+    <article class="lane">
+      <h4>${w.name}</h4>
+      <ul>${w.items.map(item => `<li>${item}</li>`).join("")}</ul>
+    </article>
+  `).join("");
+}
+
+function renderDirectory() {
+  const query = document.getElementById("peopleSearch").value.trim();
+  const list = document.getElementById("directoryList");
+  document.querySelectorAll("[data-dir-tab]").forEach(btn => btn.classList.toggle("active", btn.dataset.dirTab === dirTab));
+  if (dirTab === "dept" && !query) {
+    list.innerHTML = departments.map(d => `<button class="dept-row" data-open-dept="${d.name}"><span class="folder">▣</span><span><span class="dept-title">${d.name}</span><span class="dept-count">(${d.count}人)</span></span></button>`).join("");
+  } else {
+    const shown = people.filter(p => !query || (p.name + p.role + p.dept + (p.status || "")).includes(query));
+    if (!shown.some(p => p.name === selectedPerson.name) && shown.length) {
+      selectedPerson = shown[0];
+    }
+    list.innerHTML = shown.map(p => `<button class="person-row ${p.name === selectedPerson.name ? "selected" : ""}" data-person="${p.name}">
+      <span class="avatar">${p.avatar}</span>
+      <span><span class="name-line"><span class="person-name">${p.name}</span>${p.manager ? '<span class="badge manager">子管理员</span>' : ""}${p.status ? `<span class="status">${iconForStatus(p.status)}${p.status}</span>` : ""}</span><span class="person-role">${p.role}</span></span>
+    </button>`).join("");
+  }
+  renderPersonDetail();
+}
+
+function renderPersonDetail() {
+  const p = selectedPerson;
+  document.getElementById("personDetail").innerHTML = `
+    <div class="detail-hero">
+      <div class="avatar" style="width:72px;height:72px;border-radius:18px;font-size:26px">${p.avatar}</div>
+      <div><h2>${p.name}${p.manager ? ' <span class="badge manager">子管理员</span>' : ""}</h2><p>${p.dept} · ${p.role}${p.status ? " · " + p.status : ""}</p></div>
+    </div>
+    <div class="detail-grid">
+      <div class="info-box"><span>本月授课</span><b>${p.lessons} 次</b></div>
+      <div class="info-box"><span>累计学时</span><b>${p.hours} h</b></div>
+      <div class="info-box"><span>课程评分</span><b>${p.score}</b></div>
+      <div class="info-box"><span>权限角色</span><b>${p.manager ? "子管理员" : "普通成员"}</b></div>
+      <div class="info-box"><span>组织归属</span><b>${p.dept}</b></div>
+      <div class="info-box"><span>当前状态</span><b>${p.status || "在线"}</b></div>
+    </div>
+    <div class="card-head"><h3>相关课程</h3><button class="btn primary">分配课程</button></div>
+    <table class="table"><thead><tr><th>课程</th><th>日期</th><th>状态</th></tr></thead><tbody>
+      <tr><td><a href="#">航空英语 ICAO Level 4</a></td><td>2026-06-25</td><td><span class="pill green">进行中</span></td></tr>
+      <tr><td><a href="#">B737NG 机型差异培训</a></td><td>2026-06-18</td><td><span class="pill">待开课</span></td></tr>
+      <tr><td><a href="#">CRM 机组资源管理</a></td><td>2026-06-15</td><td><span class="pill red">待确认</span></td></tr>
+    </tbody></table>
+  `;
+}
+
+function renderCourses() {
+  document.getElementById("courseGrid").innerHTML = courses.map(c => `<article class="course">
+    <div class="course-top ${c.type}"><strong>${c.type === "red" ? "安全" : c.type === "gold" ? "英语" : "训练"}</strong><span class="pill" style="background:rgba(255,255,255,.22);color:white">报名中</span></div>
+    <div class="course-body"><h3>${c.name}</h3><p>讲师：${c.teacher}</p><p>${c.meta}</p><div class="progress"><i style="width:${c.pct}%"></i></div></div>
+  </article>`).join("");
+}
+
+function renderApprovals() {
+  const rows = people.slice(1, 7).map((p, i) => [p.name, p.dept, courses[i % courses.length].name, `06-${10 + i} 09:${i}0`]);
+  document.getElementById("approvalRows").innerHTML = rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td><span class="pill red">待审批</span></td><td><button class="btn primary">通过</button> <button class="btn">驳回</button></td></tr>`).join("");
+}
+
+function renderReports() {
+  document.getElementById("reportBars").innerHTML = scenarios.map(s => `
+    <div style="margin-bottom:18px">
+      <strong style="display:block;margin-bottom:8px">${s.title}</strong>
+      <ul class="muted-list">${s.bullets.map(b => `<li>${b}</li>`).join("")}</ul>
+    </div>
+  `).join("");
+  document.getElementById("rankingRows").innerHTML = [
+    ["绩效与业务审批", "先做摘要、归类、催办和意见草拟，缩短流转时间。"],
+    ["教学计划与课程管理", "把排课、冲突检查、计划生成作为 AI 先行场景。"],
+    ["训练质量与报表", "自动汇总质量波动、月报、对部门汇报材料。"],
+    ["资质与课程开发", "把标准、历史课件、更新记录串成知识库辅助开发。"] 
+  ].map(r => `<article class="scenario-card"><h4>${r[0]}</h4><p>${r[1]}</p></article>`).join("");
+}
+
+function bindEvents() {
+  document.body.addEventListener("click", e => {
+    const go = e.target.closest("[data-go]");
+    if (go) switchPage(go.dataset.go);
+    const slideDot = e.target.closest("[data-slide]");
+    if (slideDot) {
+      activeHeroSlide = Number(slideDot.dataset.slide) || 0;
+      renderHeroCarousel();
+      startHeroCarousel();
+    }
+    const tab = e.target.closest("[data-dir-tab]");
+    if (tab) { dirTab = tab.dataset.dirTab; renderDirectory(); }
+    const dept = e.target.closest("[data-open-dept], [data-dept]");
+    if (dept) { dirTab = "people"; document.getElementById("peopleSearch").value = dept.dataset.openDept || dept.dataset.dept; switchPage("directory"); renderDirectory(); }
+    const person = e.target.closest("[data-person]");
+    if (person) { selectedPerson = people.find(p => p.name === person.dataset.person) || selectedPerson; renderDirectory(); }
+    const loginPreview = e.target.closest(".login-composite");
+    if (loginPreview) {
+      const role = roles[0];
+      document.getElementById("sideAvatar").textContent = role.avatar;
+      document.getElementById("sideName").textContent = role.name;
+      document.getElementById("sideRole").textContent = role.role;
+      selectedPerson = people.find(p => p.name === role.name) || people[0];
+      document.getElementById("loginPage").classList.add("hidden");
+      document.getElementById("app").classList.remove("hidden");
+      switchPage("dashboard");
+      renderDirectory();
+    }
+  });
+  document.getElementById("peopleSearch").addEventListener("input", () => { dirTab = "people"; renderDirectory(); });
+  document.getElementById("clearSearch").addEventListener("click", () => { document.getElementById("peopleSearch").value = ""; dirTab = "dept"; renderDirectory(); });
+  document.getElementById("loginForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const role = roles.find(r => r.id === document.getElementById("role").value) || roles[0];
+    document.getElementById("sideAvatar").textContent = role.avatar;
+    document.getElementById("sideName").textContent = role.name;
+    document.getElementById("sideRole").textContent = role.role;
+    selectedPerson = people.find(p => p.name === role.name) || people[0];
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+    switchPage("dashboard");
+    renderDirectory();
+  });
+  document.getElementById("logout").addEventListener("click", () => {
+    document.getElementById("loginPage").classList.remove("hidden");
+    document.getElementById("app").classList.add("hidden");
+  });
+}
+
+function tick() {
+  document.getElementById("clock").textContent = new Date().toLocaleString("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+}
+
+renderRoleSelect();
+renderNav();
+renderDashboard();
+renderHeroCarousel();
+startHeroCarousel();
+renderPlan();
+renderDirectory();
+renderCourses();
+renderApprovals();
+renderReports();
+bindEvents();
+tick();
+setInterval(tick, 30000);
+</script>
+</body>
+</html>
