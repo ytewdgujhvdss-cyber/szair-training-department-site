@@ -524,20 +524,150 @@ button { cursor: pointer; }
   .quick-stats, .course-grid, .detail-grid, .stage-grid, .target-band, .portal-tiles { grid-template-columns: repeat(2, 1fr); }
   .lane-grid, .scenario-grid { grid-template-columns: 1fr; }
 }
-@media (max-width: 620px) {
-  .login-composite { width: 100%; min-height: 100vh; }
-  .login-shot-left { left: 3%; top: 14%; width: 66vw; }
-  .login-card { right: 4%; top: 16%; width: 52vw; min-width: 0; padding: 26px 18px 22px; border-radius: 18px; }
-  .content { padding: 16px; }
-  .topbar { padding: 0 16px; }
+@media (max-width: 768px) {
+  .login {
+    padding: 24px 16px;
+    align-items: stretch;
+  }
+  .login::before {
+    background: rgba(9, 21, 38, .28);
+  }
+  .login-shell,
+  .login-composite {
+    width: 100%;
+    min-height: auto;
+  }
+  .login-shot-left {
+    display: none;
+  }
+  .login-card {
+    position: relative;
+    right: auto;
+    top: auto;
+    margin: auto;
+    width: min(100%, 440px);
+    min-width: 0;
+    padding: 28px 18px 22px;
+    border-radius: 20px;
+  }
+  .login-title { font-size: 24px; }
+  .field {
+    height: 58px;
+    grid-template-columns: 38px 1fr;
+    padding: 0 14px;
+    margin-bottom: 14px;
+    border-radius: 16px;
+  }
+  .field-icon { font-size: 18px; }
+  .login-links a, .portal-note { font-size: 13px; }
+  .sidebar {
+    padding: 14px 12px 12px;
+  }
+  .side-head {
+    padding: 0 4px 14px;
+  }
+  .nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 12px 0 8px;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav button {
+    flex: 0 0 auto;
+    min-width: max-content;
+    padding: 0 14px;
+    white-space: nowrap;
+  }
+  .side-user { padding-top: 12px; }
+  .topbar {
+    height: auto;
+    min-height: 58px;
+    padding: 12px 16px;
+    align-items: flex-start;
+    gap: 6px;
+    flex-direction: column;
+  }
+  .topbar h1 { font-size: 17px; }
+  .topbar time { font-size: 12px; }
+  .content { padding: 14px; }
+  .hero-strip { gap: 14px; }
+  .hero-carousel {
+    min-height: 240px;
+    border-radius: 12px;
+  }
+  .hero-minimal-copy {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+  .hero-minimal-copy h2 {
+    font-size: 28px;
+    line-height: 1.08;
+  }
+  .hero-dots {
+    right: 14px;
+    bottom: 14px;
+  }
+  .quick-stats, .course-grid, .detail-grid, .stage-grid, .target-band, .portal-tiles,
+  .lane-grid, .scenario-grid, .grid-2 { grid-template-columns: 1fr; }
   .work-panel { grid-template-columns: 1fr; }
-  .quick-stats, .course-grid, .detail-grid, .stage-grid, .target-band, .portal-tiles { grid-template-columns: 1fr; }
-  .hero-carousel { min-height: 360px; }
-  .hero-minimal-copy { left: 20px; bottom: 20px; }
+  .detail-hero {
+    padding: 18px;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .detail-hero h2 { font-size: 24px; }
+  .phone-toolbar {
+    padding: 12px;
+    height: auto;
+    flex-wrap: wrap;
+  }
+  .search { min-width: 0; }
+  .dept-row, .person-row {
+    min-height: 78px;
+    padding: 10px 14px;
+    gap: 12px;
+  }
+  .folder, .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+  }
+  .dept-title, .person-name { font-size: 18px; }
+  .dept-count, .person-role, .status { font-size: 14px; }
+  .badge {
+    min-height: 24px;
+    font-size: 12px;
+    padding: 0 8px;
+  }
+  .table { font-size: 13px; }
+  .table th, .table td { padding: 10px 12px; }
+}
+@media (max-width: 620px) {
+  .login {
+    padding: 16px 12px;
+  }
+  .login-card {
+    width: 100%;
+    padding: 24px 16px 20px;
+    border-radius: 18px;
+  }
+  .login-title { font-size: 22px; }
+  .content { padding: 12px; }
+  .topbar { padding: 0 16px; }
+  .hero-carousel { min-height: 212px; }
+  .hero-minimal-copy h2 { font-size: 24px; }
   .phone { min-height: auto; }
-  .dept-row, .person-row { min-height: 82px; padding: 10px 14px; gap: 14px; }
-  .folder, .avatar { width: 54px; height: 54px; }
-  .person-name, .dept-title { font-size: 19px; }
+  .dept-row, .person-row { min-height: 72px; padding: 10px 12px; gap: 12px; }
+  .folder, .avatar { width: 46px; height: 46px; }
+  .person-name, .dept-title { font-size: 17px; }
+  .card-head {
+    min-height: 50px;
+    padding: 0 14px;
+  }
+  .card-body { padding: 14px; }
 }
 </style>
 </head>
