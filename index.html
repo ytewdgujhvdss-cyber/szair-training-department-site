@@ -515,13 +515,137 @@ button { cursor: pointer; }
 }
 .portal-tile h4 { margin: 0 0 8px; font-size: 17px; }
 .portal-tile p { margin: 0; color: var(--subtle); font-size: 13px; line-height: 1.6; }
+.ops-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.ops-card {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, #fff 0%, #f8fbff 100%);
+}
+.ops-card b {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+.ops-card p {
+  margin: 0;
+  color: var(--subtle);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.metric-strip {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+.metric-box {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: white;
+}
+.metric-box strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 24px;
+}
+.metric-box span {
+  color: var(--subtle);
+  font-size: 13px;
+}
+.split-grid {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 18px;
+}
+.process-list {
+  display: grid;
+  gap: 12px;
+}
+.process-row {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: white;
+}
+.process-row b {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+.process-row p {
+  margin: 0;
+  color: var(--subtle);
+  font-size: 13px;
+}
+.process-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #fff3f2;
+  color: var(--sz-red);
+  font-size: 12px;
+  font-weight: 760;
+}
+.ai-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.ai-card {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, #fff 0%, #f9fbff 100%);
+}
+.ai-card h4 {
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+.ai-card p {
+  margin: 0 0 12px;
+  color: var(--subtle);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.ai-card ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--subtle);
+}
+.ai-card li { margin: 6px 0; }
+.mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.mini-table td {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.mini-table td:last-child {
+  text-align: right;
+  color: var(--subtle);
+}
 
 @media (max-width: 980px) {
   .app { grid-template-columns: 1fr; }
   .sidebar { position: relative; height: auto; }
   .nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
   .hero-strip, .grid-2, .directory-layout { grid-template-columns: 1fr; }
-  .quick-stats, .course-grid, .detail-grid, .stage-grid, .target-band, .portal-tiles { grid-template-columns: repeat(2, 1fr); }
+  .quick-stats, .course-grid, .detail-grid, .stage-grid, .target-band, .portal-tiles, .ops-grid, .metric-strip { grid-template-columns: repeat(2, 1fr); }
+  .split-grid, .ai-grid { grid-template-columns: 1fr; }
   .lane-grid, .scenario-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
@@ -611,8 +735,9 @@ button { cursor: pointer; }
     bottom: 14px;
   }
   .quick-stats, .course-grid, .detail-grid, .stage-grid, .target-band, .portal-tiles,
-  .lane-grid, .scenario-grid, .grid-2 { grid-template-columns: 1fr; }
+  .lane-grid, .scenario-grid, .grid-2, .ops-grid, .metric-strip, .ai-grid { grid-template-columns: 1fr; }
   .work-panel { grid-template-columns: 1fr; }
+  .split-grid { grid-template-columns: 1fr; }
   .detail-hero {
     padding: 18px;
     gap: 14px;
@@ -668,6 +793,10 @@ button { cursor: pointer; }
     padding: 0 14px;
   }
   .card-body { padding: 14px; }
+  .process-row {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
 }
 </style>
 </head>
@@ -683,7 +812,7 @@ button { cursor: pointer; }
         <span class="login-title">深圳航空培训部</span>
       </div>
       <div class="login-subtitle">TRAINING MANAGEMENT PORTAL</div>
-      <label class="field"><span class="field-icon">●</span><input id="username" value="a04937" aria-label="账号"></label>
+      <label class="field"><span class="field-icon">●</span><input id="username" value="a01149" aria-label="账号"></label>
       <label class="field"><span class="field-icon">□</span><input id="password" type="password" value="password" aria-label="密码"></label>
       <label class="field"><span class="field-icon">◇</span><select id="role" aria-label="身份"></select></label>
       <div class="login-links"><a href="#">重置密码</a><a href="#">问题反馈</a></div>
@@ -720,33 +849,70 @@ button { cursor: pointer; }
         </div>
         <div class="grid-2">
           <div class="card">
-            <div class="card-head"><h3>近期待办</h3><span class="pill red">今日重点</span></div>
+            <div class="card-head"><h3>今日待办</h3><span class="pill red">今日重点</span></div>
             <div class="card-body" id="todoList"></div>
           </div>
           <div class="card">
-            <div class="card-head"><h3>业务域概览</h3><button class="btn" data-go="directory">全部</button></div>
+            <div class="card-head"><h3>三条优先闭环</h3><button class="btn" data-go="aihub">查看 AI 工作台</button></div>
             <div class="card-body">
               <table class="table"><tbody id="deptSummary"></tbody></table>
             </div>
           </div>
         </div>
         <div class="card" style="margin-top:18px">
-          <div class="card-head"><h3>常用入口</h3><button class="btn" data-go="courses">课程中心</button></div>
+          <div class="card-head"><h3>P0 建设模块</h3><button class="btn" data-go="courses">课程中心</button></div>
           <div class="card-body">
             <div class="portal-tiles" id="targetBand"></div>
           </div>
         </div>
+        <div class="card" style="margin-top:18px">
+          <div class="card-head"><h3>管理层视角</h3><button class="btn" data-go="reports">进入数据看板</button></div>
+          <div class="card-body"><div class="metric-strip" id="metricStrip"></div></div>
+        </div>
       </section>
 
-      <section class="page" id="plan">
+      <section class="page" id="courses">
         <div class="section-stack">
           <div class="card">
-            <div class="card-head"><h3>四阶段推进图</h3><span class="pill">AI 赋能计划</span></div>
-            <div class="card-body"><div class="stage-grid" id="stageGrid"></div></div>
+            <div class="card-head"><h3>课程中心总览</h3><span class="pill">报名 / 开班 / 复训 / 归档</span></div>
+            <div class="card-body"><div class="ops-grid" id="courseOps"></div></div>
           </div>
           <div class="card">
-            <div class="card-head"><h3>中心业务梳理</h3><button class="btn" data-go="directory">关联人员</button></div>
-            <div class="card-body"><div class="lane-grid" id="laneGrid"></div></div>
+            <div class="card-head"><h3>重点课程池</h3><button class="btn" data-go="approvals">联动审批</button></div>
+            <div class="card-body"><div class="course-grid" id="courseGrid"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="approvals">
+        <div class="section-stack">
+          <div class="card"><div class="card-head"><h3>待审批报名</h3><button class="btn primary">批量处理</button></div><div class="card-body" style="padding:0"><table class="table"><thead><tr><th>申请人</th><th>科室</th><th>课程</th><th>提交时间</th><th>状态</th><th>操作</th></tr></thead><tbody id="approvalRows"></tbody></table></div></div>
+          <div class="card"><div class="card-head"><h3>审批流分层设计</h3><span class="pill">一事一流程</span></div><div class="card-body"><div class="process-list" id="approvalFlows"></div></div></div>
+        </div>
+      </section>
+
+      <section class="page" id="students">
+        <div class="split-grid">
+          <div class="card">
+            <div class="card-head"><h3>学员管理闭环</h3><span class="pill">报到 / 训练 / 下飞</span></div>
+            <div class="card-body"><div class="process-list" id="studentFlow"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>学员运行台账</h3><button class="btn" data-go="reports">查看指标</button></div>
+            <div class="card-body"><table class="mini-table" id="studentLedger"></table></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="faculty">
+        <div class="split-grid">
+          <div class="card">
+            <div class="card-head"><h3>教员资质管理</h3><span class="pill">证照 / 课程 / 复训</span></div>
+            <div class="card-body"><div class="process-list" id="facultyFlow"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>资质风险清单</h3><button class="btn" data-go="aihub">AI 生成提醒</button></div>
+            <div class="card-body"><table class="mini-table" id="facultyLedger"></table></div>
           </div>
         </div>
       </section>
@@ -762,19 +928,30 @@ button { cursor: pointer; }
         </div>
       </section>
 
-      <section class="page" id="courses">
-        <div class="filter"><input placeholder="搜索课程名称、讲师"><select><option>全部类别</option><option>飞行培训</option><option>英语培训</option><option>理论培训</option></select><button class="btn primary">搜索</button></div>
-        <div class="course-grid" id="courseGrid"></div>
-      </section>
-
-      <section class="page" id="approvals">
-        <div class="card"><div class="card-head"><h3>待审批报名</h3><button class="btn primary">批量处理</button></div><div class="card-body" style="padding:0"><table class="table"><thead><tr><th>申请人</th><th>科室</th><th>课程</th><th>提交时间</th><th>状态</th><th>操作</th></tr></thead><tbody id="approvalRows"></tbody></table></div></div>
-      </section>
-
       <section class="page" id="reports">
-        <div class="grid-2">
-          <div class="card"><div class="card-head"><h3>问题定位框架</h3><span class="pill green">谁 / 场景 / 困难 / 后果</span></div><div class="card-body" id="reportBars"></div></div>
-          <div class="card"><div class="card-head"><h3>AI 方案切入点</h3><button class="btn" data-go="plan">回到业务梳理</button></div><div class="card-body" id="rankingRows"></div></div>
+        <div class="section-stack">
+          <div class="card"><div class="card-head"><h3>管理驾驶舱</h3><span class="pill green">验收指标</span></div><div class="card-body"><div class="metric-strip" id="reportMetrics"></div></div></div>
+          <div class="grid-2">
+            <div class="card"><div class="card-head"><h3>问题定位框架</h3><span class="pill green">谁 / 场景 / 困难 / 后果</span></div><div class="card-body" id="reportBars"></div></div>
+            <div class="card"><div class="card-head"><h3>AI 方案切入点</h3><button class="btn" data-go="aihub">进入 AI 工作台</button></div><div class="card-body" id="rankingRows"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="aihub">
+        <div class="section-stack">
+          <div class="card">
+            <div class="card-head"><h3>AI 工作台</h3><span class="pill red">AI 留痕可追溯</span></div>
+            <div class="card-body"><div class="ai-grid" id="aiGrid"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>四阶段推进图</h3><span class="pill">实施路线图</span></div>
+            <div class="card-body"><div class="stage-grid" id="stageGrid"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>中心业务梳理</h3><button class="btn" data-go="directory">关联人员</button></div>
+            <div class="card-body"><div class="lane-grid" id="laneGrid"></div></div>
+          </div>
         </div>
       </section>
     </div>
@@ -858,11 +1035,13 @@ const scenarios = [
 
 const navItems = [
   ["dashboard", "工作台", ""],
-  ["plan", "AI 工作计划", "4"],
-  ["directory", "组织通讯录", "390"],
   ["courses", "课程中心", "48"],
-  ["approvals", "报名审批", "12"],
-  ["reports", "数据看板", ""]
+  ["approvals", "报名审批中心", "12"],
+  ["students", "学员管理", "348"],
+  ["faculty", "教员资质", "31"],
+  ["directory", "组织通讯录", "390"],
+  ["reports", "数据看板", ""],
+  ["aihub", "AI 工作台", "P0"]
 ];
 
 let activePage = "dashboard";
@@ -907,12 +1086,27 @@ function renderDashboard() {
     ["red", "学员报到审核", "本周新学员报到材料待复核", "本周"]
   ];
   document.getElementById("todoList").innerHTML = todos.map(t => `<div class="todo"><i class="dot ${t[0]}"></i><div><strong>${t[1]}</strong><span>${t[2]}</span></div><time>${t[3]}</time></div>`).join("");
-  document.getElementById("deptSummary").innerHTML = workstreams.map((d, i) => `<tr><td><a href="#" data-go="directory">${d.name}</a></td><td>${d.items.length} 项</td><td><span class="pill">${["稳定运行","高频使用","持续排班","重点保障","日常协同"][i]}</span></td></tr>`).join("");
+  document.getElementById("deptSummary").innerHTML = [
+    ["课程报名与审批闭环", "课程中心 + 审批中心", "P0 优先上线"],
+    ["学员训练管理闭环", "学员管理 + 数据看板", "P0 核心台账"],
+    ["AI 报表与汇报闭环", "数据看板 + AI 工作台", "P1 持续提速"]
+  ].map(row => `<tr><td><a href="#" data-go="aihub">${row[0]}</a></td><td>${row[1]}</td><td><span class="pill">${row[2]}</span></td></tr>`).join("");
   document.getElementById("targetBand").innerHTML = [
-    ["组织通讯录", "快速查看教研室架构、人员状态和岗位信息。"],
-    ["课程中心", "统一管理报名中、即将开课和重点复训课程。"],
-    ["审批与看板", "集中处理审批事项并查看培训运行数据。"]
+    ["首页工作台", "先看重点事项、优先闭环和管理指标，再进入具体业务面板。"],
+    ["课程中心", "统一管理报名、开班、复训、归档四类课程运行状态。"],
+    ["报名审批中心", "把课程审批、资质审批、计划审批收口到同一入口。"],
+    ["学员管理", "围绕报到、训练计划、积分、下飞等业务形成完整闭环。"],
+    ["教员资质", "证照、授权、复训和课程开发记录统一维护。"],
+    ["AI 工作台", "审批助手、报表助手、知识库助手作为第一批 AI 场景。"]
   ].map(t => `<div class="portal-tile"><h4>${t[0]}</h4><p>${t[1]}</p></div>`).join("");
+  document.getElementById("metricStrip").innerHTML = [
+    ["2.6h", "平均审批处理时长"],
+    ["91%", "核心业务线上化率"],
+    ["96%", "关键数据完整率"],
+    ["68%", "AI 初稿采用率"],
+    ["-43%", "重复录入下降"],
+    ["12min", "汇报生成时长"]
+  ].map(m => `<div class="metric-box"><strong>${m[0]}</strong><span>${m[1]}</span></div>`).join("");
 }
 
 function renderHeroCarousel() {
@@ -935,7 +1129,7 @@ function startHeroCarousel() {
   }, 4200);
 }
 
-function renderPlan() {
+function renderAIHub() {
   document.getElementById("stageGrid").innerHTML = stages.map(s => `
     <article class="stage-card">
       <span class="stage-no">${s.no}</span>
@@ -951,6 +1145,14 @@ function renderPlan() {
       <ul>${w.items.map(item => `<li>${item}</li>`).join("")}</ul>
     </article>
   `).join("");
+  document.getElementById("aiGrid").innerHTML = [
+    ["审批助手", "自动读取申请内容，生成审批摘要、风险提示和建议意见。", ["适用课程报名", "适用资质续期", "全程留痕"]],
+    ["报表助手", "按周报、月报、专项汇报模板自动汇总训练、资质和审批数据。", ["生成初稿", "引用台账", "支持复核"]],
+    ["知识库助手", "把制度、课件、历史复盘和更新记录汇总为检索式知识库。", ["按角色检索", "支持问答", "沉淀规范"]],
+    ["排课助手", "辅助发现时间冲突、资源占用和重复排班，优先做建议稿。", ["避免冲突", "给出备选", "人工确认"]],
+    ["课程开发助手", "围绕大纲、课件、更新说明生成课程开发初稿与改版建议。", ["适合理论/英语", "更新可追踪", "输出结构化"]],
+    ["风险预警助手", "对过期证照、即将复训、审批积压和质量波动给出预警。", ["预警提前", "自动提醒", "支持催办"]]
+  ].map(card => `<article class="ai-card"><h4>${card[0]}</h4><p>${card[1]}</p><ul>${card[2].map(item => `<li>${item}</li>`).join("")}</ul></article>`).join("");
 }
 
 function renderDirectory() {
@@ -997,6 +1199,12 @@ function renderPersonDetail() {
 }
 
 function renderCourses() {
+  document.getElementById("courseOps").innerHTML = [
+    ["报名中课程", "统一收口报名申请、名额占用、冲突校验。"],
+    ["即将开班", "自动联动教员、场地、计划和审批状态。"],
+    ["复训课程", "按到期周期提醒复训、复考和通知发送。"],
+    ["课程归档", "沉淀成绩、签到、课件和过程记录。"]
+  ].map(c => `<article class="ops-card"><b>${c[0]}</b><p>${c[1]}</p></article>`).join("");
   document.getElementById("courseGrid").innerHTML = courses.map(c => `<article class="course">
     <div class="course-top ${c.type}"><strong>${c.type === "red" ? "安全" : c.type === "gold" ? "英语" : "训练"}</strong><span class="pill" style="background:rgba(255,255,255,.22);color:white">报名中</span></div>
     <div class="course-body"><h3>${c.name}</h3><p>讲师：${c.teacher}</p><p>${c.meta}</p><div class="progress"><i style="width:${c.pct}%"></i></div></div>
@@ -1006,9 +1214,57 @@ function renderCourses() {
 function renderApprovals() {
   const rows = people.slice(1, 7).map((p, i) => [p.name, p.dept, courses[i % courses.length].name, `06-${10 + i} 09:${i}0`]);
   document.getElementById("approvalRows").innerHTML = rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td><span class="pill red">待审批</span></td><td><button class="btn primary">通过</button> <button class="btn">驳回</button></td></tr>`).join("");
+  document.getElementById("approvalFlows").innerHTML = [
+    ["课程报名审批", "学员发起 -> 科室审核 -> 培训部确认 -> 自动通知", "P0"],
+    ["资质续期审批", "教员提交资料 -> 资质复核 -> 到期提醒 -> 完成归档", "P0"],
+    ["计划调整审批", "排课变更 -> 资源校验 -> 领导审批 -> 更新工作台", "P1"],
+    ["专项报表审批", "报表草稿 -> AI 摘要 -> 管理复核 -> 对部门汇报", "P1"]
+  ].map(item => `<article class="process-row"><span class="process-tag">${item[2]}</span><div><b>${item[0]}</b><p>${item[1]}</p></div><button class="btn">查看流程</button></article>`).join("");
+}
+
+function renderStudents() {
+  document.getElementById("studentFlow").innerHTML = [
+    ["报到管理", "新学员报到、资料校验、基础档案建档。", "入口收口"],
+    ["训练计划", "训练阶段、排班安排、异常调整和提醒。", "计划联动"],
+    ["过程台账", "积分、作风、训练记录、航校信息统一沉淀。", "数据沉淀"],
+    ["下飞管理", "资格核验、评估结论、离队闭环和档案归档。", "闭环完成"]
+  ].map(item => `<article class="process-row"><span class="process-tag">${item[2]}</span><div><b>${item[0]}</b><p>${item[1]}</p></div><button class="btn">进入</button></article>`).join("");
+  document.getElementById("studentLedger").innerHTML = [
+    ["在训学员", "214 人"],
+    ["本周报到", "16 人"],
+    ["下飞办理中", "9 人"],
+    ["积分异常", "3 条"],
+    ["航校协同事项", "11 项"],
+    ["待更新训练记录", "27 条"]
+  ].map(row => `<tr><td>${row[0]}</td><td>${row[1]}</td></tr>`).join("");
+}
+
+function renderFaculty() {
+  document.getElementById("facultyFlow").innerHTML = [
+    ["资质建档", "教员证照、授权课程、岗位归属一次建档。", "一人一身份"],
+    ["复训到期", "按证照与课程周期生成复训和复考提醒。", "自动提醒"],
+    ["授课授权", "课程授权与排课权限联动，避免错配授课。", "权限联动"],
+    ["课程开发", "课件更新、版本记录、质量反馈统一归档。", "知识沉淀"]
+  ].map(item => `<article class="process-row"><span class="process-tag">${item[2]}</span><div><b>${item[0]}</b><p>${item[1]}</p></div><button class="btn">查看</button></article>`).join("");
+  document.getElementById("facultyLedger").innerHTML = [
+    ["本月到期资质", "6 项"],
+    ["待复训教员", "11 人"],
+    ["授权冲突", "2 条"],
+    ["待更新课件", "7 份"],
+    ["质量复盘待办", "4 项"],
+    ["AI 生成提醒", "13 条"]
+  ].map(row => `<tr><td>${row[0]}</td><td>${row[1]}</td></tr>`).join("");
 }
 
 function renderReports() {
+  document.getElementById("reportMetrics").innerHTML = [
+    ["-38%", "审批处理时长下降"],
+    ["89%", "核心业务线上化率"],
+    ["95%", "数据完整率"],
+    ["71%", "AI 初稿采用率"],
+    ["-41%", "重复录入减少"],
+    ["4.3x", "汇报生成效率"]
+  ].map(m => `<div class="metric-box"><strong>${m[0]}</strong><span>${m[1]}</span></div>`).join("");
   document.getElementById("reportBars").innerHTML = scenarios.map(s => `
     <div style="margin-bottom:18px">
       <strong style="display:block;margin-bottom:8px">${s.title}</strong>
@@ -1081,10 +1337,12 @@ renderNav();
 renderDashboard();
 renderHeroCarousel();
 startHeroCarousel();
-renderPlan();
+renderAIHub();
 renderDirectory();
 renderCourses();
 renderApprovals();
+renderStudents();
+renderFaculty();
 renderReports();
 bindEvents();
 tick();
