@@ -1557,6 +1557,7 @@ function openQaPanel() {
     addQaMessage("bot", "你好，我是培训部知识库助手。可以问我课件标准、教员资质、数字资产、训练资源和建设路线相关问题。");
     qaStarted = true;
   }
+  warmupKnowledgeBase();
   qs("qaInput").focus();
 }
 
@@ -1566,7 +1567,8 @@ function closeQaPanel() {
 }
 
 async function askKnowledgeBase(question) {
-  const response = await fetch("/api/qa/ask", {
+  const apiUrl = window.TRAINING_QA_API_URL || "/api/qa/ask";
+  const response = await fetch(apiUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -1582,6 +1584,17 @@ async function askKnowledgeBase(question) {
   }
 
   return response.json();
+}
+
+async function warmupKnowledgeBase() {
+  try {
+    const apiUrl = window.TRAINING_QA_API_URL || "/api/qa/ask";
+    await fetch(apiUrl, {
+      method: "OPTIONS"
+    });
+  } catch {
+    // Best-effort warmup for free-tier cold starts.
+  }
 }
 
 async function submitQaQuestion(event) {
@@ -1605,7 +1618,7 @@ async function submitQaQuestion(event) {
   } catch (error) {
     const pending = qs("qaMessages").lastElementChild;
     if (pending?.textContent === "正在检索知识库...") pending.remove();
-    addQaMessage("bot", "当前还没有连上后端知识库接口。请先启动 server.js，再重新提问。");
+    addQaMessage("bot", `知识库接口暂时不可用：${error.message || "请稍后重试"}`);
   } finally {
     qaBusy = false;
     qs("qaSend").disabled = false;
