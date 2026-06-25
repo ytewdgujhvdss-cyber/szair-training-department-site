@@ -1573,7 +1573,7 @@ function addQaMessage(role, text, sources = []) {
         sourceBox.appendChild(document.createTextNode("、"));
       }
       const title = typeof src === "string" ? src : (src.title || "未命名文档");
-      const url = typeof src === "object" && src.url ? String(src.url) : null;
+      const url = typeof src === "object" && src.url ? String(src.url) : (window.TRAINING_QA_SHARED_KB_URL || null);
       if (url) {
         const link = document.createElement("a");
         link.href = url;
