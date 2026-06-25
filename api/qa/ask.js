@@ -55,6 +55,22 @@ async function answerQuestion(body) {
     return { answer: "请先输入问题。", sources: [] };
   }
 
+  const provider = (process.env.QA_PROVIDER || "").toLowerCase();
+
+  // 显式指定 provider 时优先走指定通道
+  if (provider === "dify" && process.env.DIFY_API_KEY) {
+    return askDify(question, body);
+  }
+
+  if (provider === "dingtalk" && hasDingTalkAssistantConfig()) {
+    return askDingTalkAssistant(question, body);
+  }
+
+  if (provider === "ima" && hasImaConfig()) {
+    return askIma(question, body);
+  }
+
+  // 未指定或指定无效时，按原有优先级兜底
   if (process.env.DIFY_API_KEY) {
     return askDify(question, body);
   }
