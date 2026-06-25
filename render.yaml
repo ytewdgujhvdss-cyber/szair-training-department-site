@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: training-qa-api
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: IMA_BASE_URL
+        value: https://ima.qq.com/openapi/wiki/v1
+      - key: IMA_CLIENT_ID
+        sync: false
+      - key: IMA_API_KEY
+        sync: false
+      - key: IMA_KNOWLEDGE_BASE_ID
+        sync: false

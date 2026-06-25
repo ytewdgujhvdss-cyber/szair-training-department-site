@@ -2,13 +2,66 @@
 
 当前 GitHub Pages 只能托管静态页面，不能运行 `/api/qa/ask`。要让右下角“知识库助手”真正回答，需要部署后端。
 
-## 推荐方案：Vercel
+## 推荐方案：Render
+
+### 1. 在 Render 创建 Web Service
+
+1. 访问 https://dashboard.render.com/，用 GitHub 账号登录。
+2. 点击 **New → Web Service**。
+3. 在 **Connect a repository** 里选择 `ytewdgujhvdss-cyber/szair-training-department-site`。
+4. Render 会自动识别仓库里的 `render.yaml` 和 `package.json`：
+   - **Runtime**: Node
+   - **Build Command**: `npm install`
+   - **Start Command**: `node server.js`
+   - **Plan**: Free
+5. 点击 **Create Web Service**。
+
+### 2. 配置环境变量
+
+部署开始后，进入该服务的 **Environment** 标签页，添加以下变量：
+
+```text
+IMA_CLIENT_ID=560f1b66b1e25f0eb76a9944753f4b29
+IMA_API_KEY=xgEQ4ya/5/bnrAxXpuKAGEYiX9OlQpnqkw5HfUvQMLO6ocAknWMUF3JS6CHv38iY2ZzROmL/Kw==
+IMA_KNOWLEDGE_BASE_ID=494GjJV3RJkZ_flZSw2Hz0tOXHaBVnX-YtzcYQax2qw=
+IMA_BASE_URL=https://ima.qq.com/openapi/wiki/v1
+```
+
+> 注意：`IMA_KNOWLEDGE_BASE_ID` 不是 ima 客户端里直接看到的那个 ID，而是通过 `get_addable_knowledge_base_list` 接口拿到的 `addable_knowledge_base_list[].id`。如果后续要换知识库，请重新调用该接口获取正确 ID。
+
+### 3. 等待部署完成
+
+Render 部署成功后，会给出一个类似 `https://training-qa-api.onrender.com` 的域名。
+
+### 4. 测试后端接口
+
+```bash
+curl -X POST https://training-qa-api.onrender.com/api/qa/ask \
+  -H 'Content-Type: application/json' \
+  -d '{"question":"飞行","user":"测试用户"}'
+```
+
+### 5. 更新前端接口地址
+
+修改 `assets/qa-config.js`：
+
+```js
+window.TRAINING_QA_API_URL = "https://training-qa-api.onrender.com/api/qa/ask";
+```
+
+然后重新推送 GitHub Pages，右下角知识库助手即可调用 Render 后端。
+
+---
+
+## 备选方案：Vercel
+
+如果你更习惯 Vercel，也可以直接导入同一个仓库，使用仓库里的 `vercel.json`：
 
 1. 把本项目推送到 GitHub。
 2. 在 Vercel 导入这个仓库。
 3. 在 Vercel 项目设置里添加环境变量（只启用一种知识库方案即可）。
 
-### 方案 A：Dify（生成式回答，推荐）
+### 方案 A：Dify（生成式回答）
 
 ```text
 DIFY_API_KEY=app-xxxxxxxx
@@ -65,9 +118,7 @@ DINGTALK_SECRET=SECxxxxxxxx
 
 如果先用演示知识库，可以不填任何知识库变量，后端会返回基于关键词的演示答案。
 
----
-
-4. 部署后测试：
+### Vercel 部署后测试
 
 ```bash
 curl -X POST https://你的-vercel-域名/api/qa/ask \
@@ -75,23 +126,15 @@ curl -X POST https://你的-vercel-域名/api/qa/ask \
   -d '{"question":"课件模板怎么统一？","user":"测试用户"}'
 ```
 
-5. 如果继续使用 GitHub Pages 作为首页，把 `assets/qa-config.js` 改为：
+如果使用 GitHub Pages 作为首页，把 `assets/qa-config.js` 改为：
 
 ```js
 window.TRAINING_QA_API_URL = "https://你的-vercel-域名/api/qa/ask";
 ```
 
-6. 再推送 GitHub Pages，首页地址不变，后端接口即生效。
+再推送 GitHub Pages，首页地址不变，后端接口即生效。
 
-## 另一种方案
-
-也可以直接把应用首页地址改成 Vercel 域名：
-
-```text
-https://你的-vercel-域名/
-```
-
-这样页面和 API 在同一域名，`assets/qa-config.js` 可以保持空值。
+---
 
 ## 本地开发测试
 
@@ -111,6 +154,6 @@ curl -X POST http://localhost:3000/api/qa/ask \
 
 ## 安全提醒
 
-- `.env` 文件不要提交到 GitHub仓库。
+- `.env` 文件不要提交到 GitHub 仓库。
 - 不要把 Dify / ima / 钉钉的真实密钥写进前端代码或公开文档。
-- Vercel 环境变量应标记为“Sensitive”或只在 Build/Runtime 环境使用。
+- Render / Vercel 环境变量应标记为“Sensitive”或只在 Runtime 环境使用。
