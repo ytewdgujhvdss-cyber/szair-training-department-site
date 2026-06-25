@@ -176,10 +176,15 @@ async function askIma(question, body) {
     };
   }
 
-  const sources = list
-    .map(item => item.title)
-    .filter(Boolean)
-    .slice(0, 3);
+  const sources = await Promise.all(
+    list
+      .slice(0, 3)
+      .map(async item => {
+        const title = item.title || "未命名文档";
+        const url = await getMediaUrl(item.media_id);
+        return url ? { title, url } : { title };
+      })
+  );
 
   const context = list.slice(0, 5).map((item, idx) => ({
     index: idx + 1,
@@ -199,6 +204,39 @@ async function askIma(question, body) {
 
 function hasLlmConfig() {
   return process.env.LLM_API_KEY && process.env.LLM_API_URL;
+}
+
+async function getMediaUrl(mediaId) {
+  if (!mediaId) return null;
+  try {
+    const baseUrl = (process.env.IMA_BASE_URL || "https://ima.qq.com/openapi/wiki/v1").replace(/\/$/, "");
+    const response = await fetch(`${baseUrl}/get_media_info`, {
+      method: "POST",
+      headers: {
+        "ima-openapi-clientid": process.env.IMA_CLIENT_ID,
+        "ima-openapi-apikey": process.env.IMA_API_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ media_id: mediaId })
+    });
+
+    const text = await response.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      return null;
+    }
+
+    if (!response.ok || data.code !== 0) {
+      return null;
+    }
+
+    return data.data?.url_info?.url || null;
+  } catch (error) {
+    console.warn("getMediaUrl failed:", error.message);
+    return null;
+  }
 }
 
 async function summarizeWithLlm(question, context) {

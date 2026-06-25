@@ -854,6 +854,14 @@ a { color: inherit; }
   color: var(--muted);
   font-size: 12px;
 }
+.qa-sources a {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.qa-sources a:hover {
+  color: #1d4ed8;
+}
 .qa-form {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -1543,7 +1551,31 @@ function addQaMessage(role, text, sources = []) {
   if (sources.length) {
     const sourceBox = document.createElement("div");
     sourceBox.className = "qa-sources";
-    sourceBox.textContent = `参考来源：${sources.join("、")}`;
+
+    const label = document.createElement("span");
+    label.textContent = "参考来源：";
+    sourceBox.appendChild(label);
+
+    sources.forEach((src, idx) => {
+      if (idx > 0) {
+        sourceBox.appendChild(document.createTextNode("、"));
+      }
+      const title = typeof src === "string" ? src : (src.title || "未命名文档");
+      const url = typeof src === "object" && src.url ? String(src.url) : null;
+      if (url) {
+        const link = document.createElement("a");
+        link.href = url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = title;
+        sourceBox.appendChild(link);
+      } else {
+        const span = document.createElement("span");
+        span.textContent = title;
+        sourceBox.appendChild(span);
+      }
+    });
+
     item.appendChild(sourceBox);
   }
 
