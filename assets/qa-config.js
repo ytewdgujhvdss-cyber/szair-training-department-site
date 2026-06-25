@@ -4,5 +4,8 @@
 // 本地测试: http://localhost:3000/api/qa/ask
 window.TRAINING_QA_API_URL = window.TRAINING_QA_API_URL || "https://training-qa-api.onrender.com/api/qa/ask";
 
-// 当某个来源没有原文直链时（例如订阅知识库），点击来源跳转到的 ima 共享知识库页面
-window.TRAINING_QA_SHARED_KB_URL = window.TRAINING_QA_SHARED_KB_URL || "https://ima.qq.com/wiki/?shareId=bbe207edc532702d12be453f0a2a28845c93a77a750806b42ec3922e7400ea00";
+// 当后端返回的来源没有 url 时，点击来源跳转的页面。
+// Dify 场景下建议填写 Dify 共享应用地址或知识库页面，例如：
+// https://cloud.dify.ai/app/xxxxxx 或 https://udify.app/xxxxxx
+// 若留空，来源将显示为不可点击的文本。
+window.TRAINING_QA_SHARED_KB_URL = window.TRAINING_QA_SHARED_KB_URL || "";

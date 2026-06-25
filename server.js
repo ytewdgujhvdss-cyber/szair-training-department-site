@@ -503,15 +503,57 @@ async function askDify(question, body) {
   }
 
   const data = await response.json();
+  const fallbackUrl = process.env.DIFY_KB_URL || process.env.DIFY_APP_URL || "";
+
+  // 去重并按 score 排序，取前 5 个来源
+  const seen = new Set();
   const sources = (data.metadata?.retriever_resources || [])
-    .map(item => item.document_name || item.dataset_name)
-    .filter(Boolean)
-    .slice(0, 3);
+    .sort((a, b) => (b.score || 0) - (a.score || 0))
+    .filter(item => {
+      const key = item.document_id || item.document_name || item.dataset_name;
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, 5)
+    .map(item => {
+      const title = item.document_name || item.dataset_name || "未命名文档";
+      const url = item.url || fallbackUrl || null;
+      return {
+        title,
+        ...(url ? { url } : {}),
+        ...(item.document_id ? { document_id: item.document_id } : {}),
+        ...(item.dataset_id ? { dataset_id: item.dataset_id } : {})
+      };
+    });
 
   return {
-    answer: data.answer || "知识库没有返回明确答案。",
+    answer: cleanupAnswer(data.answer || "知识库没有返回明确答案。"),
     sources
   };
+}
+
+function cleanupAnswer(text) {
+  if (!text || typeof text !== "string") return text;
+
+  // 去掉常见分析性前缀和模型内部思考过程
+  const prefixes = [
+    /^\s*(?:根据|基于|结合|参考|依据|按照)[\s\S]*?(?:检索结果|知识库|资料|文档|上下文|信息)[，,：:\n]+\s*/i,
+    /^\s*(?:我们|我|系统|助手)?[\s\S]*?(?:根据|基于|结合|参考|依据|按照)[\s\S]*?(?:检索结果|知识库|资料|文档|上下文|信息)[，,：:\n]+\s*/i,
+    /^\s*(?:思考|分析|推理|过程|步骤|说明)[：:\n\s]+[\s\S]*?\n\s*/i,
+    /^\s*请用中文给出自然语言回答[：:\n]+\s*/i
+  ];
+
+  let cleaned = text;
+  for (let i = 0; i < 5; i++) {
+    const before = cleaned;
+    for (const regex of prefixes) {
+      cleaned = cleaned.replace(regex, "");
+    }
+    if (cleaned === before) break;
+  }
+
+  return cleaned.trim();
 }
 
 async function askGenericKnowledgeApi(question, body) {
