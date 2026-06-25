@@ -610,13 +610,83 @@ a { color: inherit; }
   font-size: 13px;
   font-weight: 800;
 }
-.photo-strip {
-  min-height: 180px;
-  border-radius: 14px;
+.image-carousel {
   overflow: hidden;
-  background:
-    linear-gradient(rgba(10, 23, 40, .22), rgba(10, 23, 40, .22)),
-    url("IMG20260624160017.jpg") center / cover no-repeat;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: white;
+}
+.carousel-stage {
+  position: relative;
+  background: #f8fafc;
+}
+.carousel-stage img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+}
+.carousel-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 18px;
+  border-top: 1px solid var(--line-soft);
+  color: var(--text);
+}
+.carousel-caption h3 {
+  margin: 0 0 6px;
+  font-size: 20px;
+}
+.carousel-caption p {
+  margin: 0;
+  max-width: 680px;
+  color: var(--muted);
+  line-height: 1.65;
+  font-size: 14px;
+}
+.carousel-controls {
+  display: flex;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+.carousel-btn {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: white;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 800;
+}
+.carousel-thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 12px;
+  background: white;
+}
+.carousel-thumb {
+  min-height: 74px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f8fafc;
+  color: var(--text);
+  padding: 10px;
+  text-align: left;
+  font-weight: 800;
+}
+.carousel-thumb span {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+.carousel-thumb.active {
+  border-color: var(--red);
+  box-shadow: inset 0 0 0 2px rgba(201, 43, 43, .12);
 }
 .photo-grid {
   display: grid;
@@ -631,8 +701,9 @@ a { color: inherit; }
 }
 .photo-card img {
   width: 100%;
-  height: 220px;
-  object-fit: cover;
+  height: 300px;
+  object-fit: contain;
+  background: #f8fafc;
 }
 .photo-card div {
   padding: 12px 14px;
@@ -678,6 +749,155 @@ a { color: inherit; }
 }
 .stage li { margin: 6px 0; }
 
+.qa-launcher {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  color: white;
+  background: linear-gradient(135deg, var(--red), #eb6b48);
+  box-shadow: 0 18px 34px rgba(201, 43, 43, .28);
+  font-weight: 850;
+}
+.qa-launcher span {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+}
+.qa-panel {
+  position: fixed;
+  right: 22px;
+  bottom: 86px;
+  z-index: 31;
+  width: min(420px, calc(100vw - 28px));
+  height: min(620px, calc(100vh - 118px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 36, .12);
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 26px 68px rgba(15, 23, 36, .22);
+}
+.qa-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  color: white;
+  background: #0f1724;
+}
+.qa-head strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+.qa-head small {
+  color: rgba(255,255,255,.68);
+  font-size: 12px;
+}
+.qa-close {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px;
+  color: white;
+  background: rgba(255,255,255,.08);
+  font-size: 20px;
+  line-height: 1;
+}
+.qa-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #f7f9fc;
+}
+.qa-message {
+  max-width: 88%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  line-height: 1.65;
+  font-size: 14px;
+}
+.qa-message.bot {
+  align-self: flex-start;
+  border: 1px solid var(--line);
+  border-top-left-radius: 5px;
+  color: var(--text);
+  background: white;
+}
+.qa-message.user {
+  align-self: flex-end;
+  border-top-right-radius: 5px;
+  color: white;
+  background: var(--blue);
+}
+.qa-sources {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(15, 23, 36, .08);
+  color: var(--muted);
+  font-size: 12px;
+}
+.qa-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  padding: 14px;
+  border-top: 1px solid var(--line);
+  background: white;
+}
+.qa-form textarea {
+  width: 100%;
+  min-height: 48px;
+  max-height: 110px;
+  resize: none;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  outline: 0;
+  color: var(--text);
+  background: #fbfdff;
+  font: inherit;
+}
+.qa-form textarea:focus {
+  border-color: rgba(28, 100, 217, .5);
+  box-shadow: 0 0 0 3px rgba(28, 100, 217, .08);
+}
+.qa-send {
+  width: 54px;
+  border: 0;
+  border-radius: 12px;
+  color: white;
+  background: var(--red);
+  font-weight: 900;
+}
+.qa-send:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+.qa-hint {
+  padding: 0 14px 14px;
+  color: var(--muted);
+  background: white;
+  font-size: 12px;
+}
+
 @media (max-width: 1080px) {
   .login-shell,
   .grid-2,
@@ -686,6 +906,7 @@ a { color: inherit; }
   }
   .login-stats,
   .hero-stats,
+  .carousel-thumbs,
   .grid-3,
   .grid-4,
   .metric-grid,
@@ -753,6 +974,14 @@ a { color: inherit; }
     grid-template-columns: 1fr;
     justify-items: start;
   }
+  .qa-launcher {
+    right: 14px;
+    bottom: 14px;
+  }
+  .qa-panel {
+    right: 14px;
+    bottom: 74px;
+  }
 }
 </style>
 </head>
@@ -801,8 +1030,7 @@ a { color: inherit; }
       <section class="page active" id="dashboard">
         <div class="hero">
           <span class="eyebrow">TRAINING DEPARTMENT PLATFORM</span>
-          <h2>从培训部起步的<br>数字化与智能化底座</h2>
-          <p>这版网站结合培训部简介、组织架构、训练设备和领导最新要求，围绕 AI 课件助手、教员全生命周期画像、数字资产沉淀和三步走自动化路径进行建设。</p>
+          <h2>深圳航空培训部<br>数字化工作台</h2>
           <div class="hero-stats" id="heroStats"></div>
         </div>
 
@@ -815,13 +1043,13 @@ a { color: inherit; }
               </div>
             </div>
             <div class="card">
-              <div class="card-head"><h3>领导关注重点</h3><span class="pill">本轮建设主线</span></div>
+              <div class="card-head"><h3>重点项目</h3><span class="pill">本轮建设主线</span></div>
               <div class="card-body"><div class="list-stack" id="leaderFocus"></div></div>
             </div>
           </div>
 
           <div class="card">
-            <div class="card-head"><h3>管理层指标概览</h3><button class="btn" data-go="reports">查看数据看板</button></div>
+            <div class="card-head"><h3>指标概览</h3><button class="btn" data-go="reports">查看数据看板</button></div>
             <div class="card-body"><div class="metric-grid" id="metricGrid"></div></div>
           </div>
 
@@ -859,7 +1087,7 @@ a { color: inherit; }
           </div>
           <div class="grid-2">
             <div class="card">
-              <div class="card-head"><h3>画像维度</h3><span class="pill green">像人，不像名单</span></div>
+              <div class="card-head"><h3>画像维度</h3></div>
               <div class="card-body"><div class="portrait-grid" id="facultyPortrait"></div></div>
             </div>
             <div class="card">
@@ -922,12 +1150,7 @@ a { color: inherit; }
 
       <section class="page" id="resources">
         <div class="section-stack">
-          <div class="photo-strip"></div>
-          <div class="photo-grid">
-            <article class="photo-card"><img src="IMG20260624160017.jpg" alt="培训部简介"><div>培训部简介展板，已纳入首页介绍与平台定位。</div></article>
-            <article class="photo-card"><img src="IMG20260624160025.jpg" alt="组织架构图"><div>组织架构图，已拆解为三个中心三个科室的数字化组织视图。</div></article>
-            <article class="photo-card"><img src="IMG20260624160022.jpg" alt="训练设备"><div>训练设备展板，已整理为飞行、乘务和教学空间三类训练资源。</div></article>
-          </div>
+          <div class="image-carousel" id="resourceCarousel"></div>
           <div class="resource-grid" id="resourceSummary"></div>
           <div class="card">
             <div class="card-head"><h3>训练资源明细</h3><span class="pill red">设备与场景保障能力</span></div>
@@ -979,6 +1202,26 @@ a { color: inherit; }
   </main>
 </section>
 
+<button class="qa-launcher hidden" id="qaLauncher" type="button" aria-controls="qaPanel" aria-expanded="false">
+  <span>?</span>知识库助手
+</button>
+
+<aside class="qa-panel hidden" id="qaPanel" aria-label="培训部知识库助手">
+  <div class="qa-head">
+    <div>
+      <strong>培训部知识库助手</strong>
+      <small>课件标准、教员资质、训练资源与流程问答</small>
+    </div>
+    <button class="qa-close" id="qaClose" type="button" aria-label="关闭知识库助手">×</button>
+  </div>
+  <div class="qa-messages" id="qaMessages"></div>
+  <form class="qa-form" id="qaForm">
+    <textarea id="qaInput" rows="2" placeholder="请输入你的问题，例如：教员资质到期提醒应该怎么做？"></textarea>
+    <button class="qa-send" id="qaSend" type="submit" aria-label="发送问题">发</button>
+  </form>
+  <div class="qa-hint">回答由后端知识库接口生成，密钥不会暴露在网页中。</div>
+</aside>
+
 <script>
 const roles = [
   { id: "duan", name: "段超", role: "飞训中心主任", avatar: "段" },
@@ -1012,7 +1255,7 @@ const heroStats = [
 
 const leaderFocus = [
   ["网站定位", "从部门出发先做成平台底座，后续向更大培训体系扩展。", "平台底座"],
-  ["AI 课件助手", "统一课件标准，按学员授课、局方审核、内部汇报等场景输出不同版本。", "优先模块"],
+  ["AI 课件助手", "统一课件标准，按学员授课、审核依据、内部汇报等场景输出不同模块。", "优先模块"],
   ["教员资质管理", "建立教员全生命周期画像，看到能干什么、干过什么、何时有风险。", "核心模块"],
   ["数字资产与自动化", "沉淀可复制工作流，按纸质化、数字化、智能化三步逐步推进。", "长期建设"]
 ];
@@ -1035,7 +1278,7 @@ const dashboardLinks = [
 const coursewareModes = [
   ["模板中心", "统一封面、目录、章节页、字体、配色、页脚和校验规则。", ["品牌统一", "格式统一", "送审更稳"]],
   ["内容生成", "输入课程主题、大纲或素材，输出结构化课件初稿和讲稿框架。", ["自动生成", "可人工改写", "版本留痕"]],
-  ["场景切换", "同一主题自动输出学员授课版、局方审核版、汇报版和教员备课版。", ["多版本", "同源内容", "适配场景"]],
+  ["场景切换", "同一主题自动输出学员授课、审核依据、内部汇报等不同模块。", ["多版本", "同源内容", "适配场景"]],
   ["标准检查", "自动发现页数异常、术语不统一、格式不规范和缺失页。", ["自动校验", "减少返工", "支持复核"]]
 ];
 
@@ -1047,9 +1290,9 @@ const coursewareChecklist = [
 ];
 
 const coursewareScenes = [
-  ["学员授课版", "更强调案例、流程、重点提示与课堂节奏。"],
-  ["局方审核版", "更强调依据、规范来源、教学目标和合规表达。"],
-  ["内部汇报版", "更强调目标、进度、成果和问题复盘。"]
+  ["学员授课", "面向课堂使用，突出案例、流程、重点提示与课堂节奏。"],
+  ["审核依据", "面向审核场景，集中呈现依据、规范来源、教学目标和合规表达。"],
+  ["内部汇报", "面向管理汇报，突出目标、进度、成果和问题复盘。"]
 ];
 
 const facultyFlow = [
@@ -1084,7 +1327,7 @@ const assetTypes = [
 
 const assetLedger = [
   ["课件模板", "飞行培训通用模板 V1.0", "已上线"],
-  ["场景模板", "学员授课版 / 局方审核版", "建设中"],
+  ["场景模板", "学员授课 / 审核依据 / 内部汇报", "建设中"],
   ["工作流", "课件开发与审核流程", "首批落地"],
   ["知识资产", "局方审核关注点清单", "整理中"],
   ["历史案例", "优秀课件与复盘样例", "持续补充"]
@@ -1121,6 +1364,33 @@ const resourceStacks = [
   ["飞行训练设备", ["4 台 B737-800 飞行模拟机", "1 台 B737-8 飞行模拟机", "1 台 B737-800 APT", "3 台 A320-200CEO 飞行模拟机", "2 台 A320-200NEO 飞行模拟机", "1 台 A320NEO APT"]],
   ["乘务训练设备", ["1 台 A320 客舱模拟器（动态）", "1 台 B737 客舱模拟器", "3 台客舱服务模拟器", "2 台灭火模拟器", "6 台出口模拟器", "2 台水上训练船", "1 台营救船"]],
   ["培训教室", ["1 个 PLPEC&PLTT 考点", "1 个应急设备室", "1 个形体训练房", "1 个茶文化教室", "1 个酒文化教室", "1 个厨房教室", "1 个化妆教室", "1 个 FAP 教室", "3 个 CPR 教室", "5 个 CBT 教室", "31 个普通教室"]]
+];
+
+const resourceSlides = [
+  {
+    title: "培训部数字化工作台",
+    text: "以培训管理、课程计划、考核评估和资源中心为核心，展示培训部数字化建设的总体入口。",
+    image: "assets/generated-training-workbench-overview.png",
+    alt: "深圳航空培训部数字化工作台总览"
+  },
+  {
+    title: "培训部简介",
+    text: "围绕人员规模、中心科室、B3 乘务训练大楼和 B5 飞行训练大楼，形成简介型视觉资产。",
+    image: "assets/generated-training-dept-intro.png",
+    alt: "培训部简介视觉图"
+  },
+  {
+    title: "组织架构",
+    text: "展示总经理室、飞行训练中心、乘务训练中心、模拟机维护中心及核心教研室关系。",
+    image: "assets/generated-training-org-chart.png",
+    alt: "培训部组织架构视觉图"
+  },
+  {
+    title: "训练设备",
+    text: "集中呈现飞行模拟机、乘务训练设备、培训教室、PLPEC 考点和动态舱等训练资源。",
+    image: "assets/generated-training-equipment.png",
+    alt: "训练设备视觉图"
+  }
 ];
 
 const reportMetrics = [
@@ -1162,6 +1432,10 @@ const phaseOne = [
 ];
 
 let activePage = "dashboard";
+let activeResourceSlide = 0;
+let resourceTimer = null;
+let qaStarted = false;
+let qaBusy = false;
 
 function qs(id) {
   return document.getElementById(id);
@@ -1211,11 +1485,43 @@ function renderCards() {
   qs("orgPriority").innerHTML = orgPriority.map(item => `<div class="list-row"><span class="tag">${item[2]}</span><div><b>${item[0]}</b><p>${item[1]}</p></div><button class="btn" data-go="dashboard">返回</button></div>`).join("");
   qs("resourceSummary").innerHTML = resourceSummary.map(item => `<article class="feature-card"><h4>${item[0]}</h4><p><strong>${item[1]}</strong></p><p style="margin-top:8px">${item[2]}</p></article>`).join("");
   qs("resourceStacks").innerHTML = resourceStacks.map(item => `<article class="feature-card"><h4>${item[0]}</h4><ul>${item[1].map(text => `<li>${text}</li>`).join("")}</ul></article>`).join("");
+  renderResourceCarousel();
   qs("reportMetrics").innerHTML = reportMetrics.map(item => `<div class="metric"><strong>${item[0]}</strong><span>${item[1]}</span></div>`).join("");
   qs("reportFocus").innerHTML = reportFocus.map(item => `<article class="feature-card"><h4>${item[0]}</h4><p>${item[1]}</p></article>`).join("");
   qs("reportActions").innerHTML = reportActions.map(item => `<div class="list-row"><span class="tag">${item[2]}</span><div><b>${item[0]}</b><p>${item[1]}</p></div><button class="btn">执行</button></div>`).join("");
   qs("roadmapStages").innerHTML = roadmapStages.map(item => `<article class="stage"><strong>${item[0]}</strong><h4>${item[1]}</h4><p>${item[2]}</p><ul>${item[3].map(text => `<li>${text}</li>`).join("")}</ul></article>`).join("");
   qs("phaseOne").innerHTML = phaseOne.map(item => `<div class="list-row"><span class="tag">${item[2]}</span><div><b>${item[0]}</b><p>${item[1]}</p></div><button class="btn">跟踪</button></div>`).join("");
+}
+
+function renderResourceCarousel() {
+  const slide = resourceSlides[activeResourceSlide];
+  qs("resourceCarousel").innerHTML = `
+    <div class="carousel-stage">
+      <img src="${slide.image}" alt="${slide.alt}">
+      <div class="carousel-caption">
+        <div><h3>${slide.title}</h3><p>${slide.text}</p></div>
+        <div class="carousel-controls">
+          <button class="carousel-btn" data-carousel="prev" aria-label="上一张">‹</button>
+          <button class="carousel-btn" data-carousel="next" aria-label="下一张">›</button>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-thumbs">
+      ${resourceSlides.map((item, index) => `<button class="carousel-thumb ${index === activeResourceSlide ? "active" : ""}" data-slide="${index}">${item.title}<span>${item.alt}</span></button>`).join("")}
+    </div>
+  `;
+}
+
+function switchResourceSlide(nextIndex) {
+  activeResourceSlide = (nextIndex + resourceSlides.length) % resourceSlides.length;
+  renderResourceCarousel();
+}
+
+function startResourceCarousel() {
+  if (resourceTimer) clearInterval(resourceTimer);
+  resourceTimer = setInterval(() => {
+    switchResourceSlide(activeResourceSlide + 1);
+  }, 5200);
 }
 
 function tick() {
@@ -1228,16 +1534,115 @@ function tick() {
   });
 }
 
+function addQaMessage(role, text, sources = []) {
+  const item = document.createElement("div");
+  item.className = `qa-message ${role}`;
+  item.textContent = text;
+
+  if (sources.length) {
+    const sourceBox = document.createElement("div");
+    sourceBox.className = "qa-sources";
+    sourceBox.textContent = `参考来源：${sources.join("、")}`;
+    item.appendChild(sourceBox);
+  }
+
+  qs("qaMessages").appendChild(item);
+  qs("qaMessages").scrollTop = qs("qaMessages").scrollHeight;
+}
+
+function openQaPanel() {
+  qs("qaPanel").classList.remove("hidden");
+  qs("qaLauncher").setAttribute("aria-expanded", "true");
+  if (!qaStarted) {
+    addQaMessage("bot", "你好，我是培训部知识库助手。可以问我课件标准、教员资质、数字资产、训练资源和建设路线相关问题。");
+    qaStarted = true;
+  }
+  qs("qaInput").focus();
+}
+
+function closeQaPanel() {
+  qs("qaPanel").classList.add("hidden");
+  qs("qaLauncher").setAttribute("aria-expanded", "false");
+}
+
+async function askKnowledgeBase(question) {
+  const response = await fetch("/api/qa/ask", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      question,
+      user: qs("sideName").textContent,
+      role: qs("sideRole").textContent,
+      page: activePage
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error(`知识库接口返回 ${response.status}`);
+  }
+
+  return response.json();
+}
+
+async function submitQaQuestion(event) {
+  event.preventDefault();
+  if (qaBusy) return;
+
+  const question = qs("qaInput").value.trim();
+  if (!question) return;
+
+  qaBusy = true;
+  qs("qaSend").disabled = true;
+  qs("qaInput").value = "";
+  addQaMessage("user", question);
+  addQaMessage("bot", "正在检索知识库...");
+
+  try {
+    const data = await askKnowledgeBase(question);
+    const pending = qs("qaMessages").lastElementChild;
+    if (pending?.textContent === "正在检索知识库...") pending.remove();
+    addQaMessage("bot", data.answer || "知识库暂时没有返回答案。", data.sources || []);
+  } catch (error) {
+    const pending = qs("qaMessages").lastElementChild;
+    if (pending?.textContent === "正在检索知识库...") pending.remove();
+    addQaMessage("bot", "当前还没有连上后端知识库接口。请先启动 server.js，再重新提问。");
+  } finally {
+    qaBusy = false;
+    qs("qaSend").disabled = false;
+    qs("qaInput").focus();
+  }
+}
+
 renderRoleSelect();
 renderNav();
 renderCards();
 applyRole();
 tick();
 setInterval(tick, 30000);
+startResourceCarousel();
 
 document.body.addEventListener("click", (event) => {
   const go = event.target.closest("[data-go]");
   if (go) switchPage(go.dataset.go);
+  const carousel = event.target.closest("[data-carousel]");
+  if (carousel) {
+    switchResourceSlide(activeResourceSlide + (carousel.dataset.carousel === "next" ? 1 : -1));
+    startResourceCarousel();
+  }
+  const slide = event.target.closest("[data-slide]");
+  if (slide) {
+    switchResourceSlide(Number(slide.dataset.slide) || 0);
+    startResourceCarousel();
+  }
+});
+
+qs("qaLauncher").addEventListener("click", openQaPanel);
+qs("qaClose").addEventListener("click", closeQaPanel);
+qs("qaForm").addEventListener("submit", submitQaQuestion);
+qs("qaInput").addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && !event.shiftKey) {
+    submitQaQuestion(event);
+  }
 });
 
 qs("loginForm").addEventListener("submit", (event) => {
@@ -1245,12 +1650,15 @@ qs("loginForm").addEventListener("submit", (event) => {
   applyRole();
   qs("loginPage").classList.add("hidden");
   qs("app").classList.remove("hidden");
+  qs("qaLauncher").classList.remove("hidden");
   switchPage("dashboard");
 });
 
 qs("logout").addEventListener("click", () => {
   qs("app").classList.add("hidden");
   qs("loginPage").classList.remove("hidden");
+  qs("qaLauncher").classList.add("hidden");
+  closeQaPanel();
 });
 </script>
 </body>
