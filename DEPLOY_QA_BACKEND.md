@@ -21,7 +21,17 @@ DIFY_API_URL=https://api.dify.ai/v1/chat-messages
 2. 使用 ima 客户端扫码或登录后，创建应用以获取：
    - ClientId（`ima-openapi-clientid`）
    - ApiKey（`ima-openapi-apikey`）
-3. 打开 ima 客户端 → 进入目标知识库 → 设置/分享 → 复制知识库 ID（`kb_id`），填入 `IMA_KNOWLEDGE_BASE_ID`。
+3. 通过 openapi 接口获取真正可用的知识库 ID：
+
+   ```bash
+   curl -X POST https://ima.qq.com/openapi/wiki/v1/get_addable_knowledge_base_list \
+     -H "ima-openapi-clientid: your_client_id" \
+     -H "ima-openapi-apikey: your_api_key" \
+     -H "Content-Type: application/json" \
+     -d '{"cursor":"","limit":20}'
+   ```
+
+   返回的 `addable_knowledge_base_list[].id` 才是 `IMA_KNOWLEDGE_BASE_ID` 要填的值。注意：ima 客户端里看到的知识库 ID 与 openapi 返回的 ID 可能不同，必须以 openapi 返回的为准。
 4. 把培训制度、课件规范、流程说明、常见问答、设备手册、教员资质说明等文档上传到该知识库，确保能被正常解析分片。
 
 ```text

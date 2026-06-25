@@ -162,9 +162,9 @@ async function askIma(question, body) {
     throw new Error(`IMA search request failed: ${response.status} ${JSON.stringify(data)}`);
   }
 
-  if (data.ret_code !== 0) {
+  if (data.code !== 0) {
     return {
-      answer: `IMA 知识库搜索返回错误：ret_code=${data.ret_code}，msg=${data.err_msg || data.msg || "无错误说明"}。请核对 IMA 凭证、知识库 ID 和接口权限。`,
+      answer: `IMA 知识库搜索返回错误：code=${data.code}，msg=${data.msg || "无错误说明"}。请核对 IMA 凭证、知识库 ID 和接口权限。`,
       sources: ["IMA 知识库"]
     };
   }
