@@ -1,0 +1,1 @@
+window.TRAINING_QA_API_URL = window.TRAINING_QA_API_URL || "";
