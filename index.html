@@ -1443,7 +1443,7 @@ a { color: inherit; }
         <div class="org-grid">
           <div class="card">
             <div class="card-head"><h3>组织架构</h3><span class="pill red">来自现场照片</span></div>
-            <div class="card-body"><div class="org-tree" id="orgTree"></div></div>
+            <div class="card-body"><img src="assets/org-chart-real.jpg" alt="深圳航空培训部组织架构图" style="width:100%;border-radius:12px;display:block;"></div>
           </div>
           <div class="section-stack">
             <div class="card">
@@ -1795,7 +1795,7 @@ function renderCards() {
   qs("assetTypes").innerHTML = assetTypes.map(item => `<article class="feature-card"><h4>${item[0]}</h4><p>${item[1]}</p></article>`).join("");
   qs("assetLedger").innerHTML = assetLedger.map(item => `<tr><td>${item[0]}</td><td>${item[1]}</td><td><span class="pill">${item[2]}</span></td></tr>`).join("");
   qs("assetFlows").innerHTML = assetFlows.map(item => `<div class="list-row"><span class="tag">${item[2]}</span><div><b>${item[0]}</b><p>${item[1]}</p></div><button class="btn">复用</button></div>`).join("");
-  qs("orgTree").innerHTML = orgTree.map(item => `<article class="org-card"><h4>${item[0]}</h4><div class="org-children">${item[1].map(text => `<span>${text}</span>`).join("")}</div></article>`).join("");
+  if (qs("orgTree")) qs("orgTree").innerHTML = orgTree.map(item => `<article class="org-card"><h4>${item[0]}</h4><div class="org-children">${item[1].map(text => `<span>${text}</span>`).join("")}</div></article>`).join("");
   qs("orgPriority").innerHTML = orgPriority.map(item => `<div class="list-row"><span class="tag">${item[2]}</span><div><b>${item[0]}</b><p>${item[1]}</p></div><button class="btn" data-go="dashboard">返回</button></div>`).join("");
   qs("resourceSummary").innerHTML = resourceSummary.map(item => `<article class="feature-card resource-summary-card"><h4>${item[0]}</h4><strong>${item[1]}</strong><p>${item[2]}</p></article>`).join("");
   qs("resourceStacks").innerHTML = resourceStacks.map(item => `<article class="feature-card resource-detail-card"><h4>${item[0]}</h4><p>${item[1].length} 项资源</p><ul>${item[1].map(text => `<li>${text}</li>`).join("")}</ul></article>`).join("");
